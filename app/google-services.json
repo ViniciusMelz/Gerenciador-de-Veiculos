@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "278073184453",
+    "firebase_url": "https://tcc-gerenciador-de-veiculos-default-rtdb.firebaseio.com",
+    "project_id": "tcc-gerenciador-de-veiculos",
+    "storage_bucket": "tcc-gerenciador-de-veiculos.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278073184453:android:562ac0f8c9209e9f9da0ac",
+        "android_client_info": {
+          "package_name": "com.application.aplicativogerenciadordeveiculos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWenjnARF1ETxTFFyXFz3j62saNPml1Dg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
