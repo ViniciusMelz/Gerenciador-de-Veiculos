@@ -20,6 +20,7 @@ import com.application.aplicativogerenciadordeveiculos.R;
 import com.application.aplicativogerenciadordeveiculos.Utils.Validador;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentLoginBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
+import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.LoginViewModel;
 
 public class LoginFragment extends Fragment {
@@ -41,34 +42,38 @@ public class LoginFragment extends Fragment {
 
         mViewModel.getmUsuarioLogado().observe(getViewLifecycleOwner(), observaAutenticacaoUsuario);
 
-        binding.bLoginEntrar.setOnClickListener(view1 -> {
-            if (!Validador.validaTexto(binding.etEmailUsuario.getText().toString())) {
-                binding.etEmailUsuario.setError("Erro: Informe o Email");
-                binding.etEmailUsuario.requestFocus();
-                return;
-            }else if(!Validador.validaEmail(binding.etEmailUsuario.getText().toString())) {
-                binding.etEmailUsuario.setError("Erro: Informe um Email Válido");
-                binding.etEmailUsuario.requestFocus();
-                return;
-            }
-            if (!Validador.validaTexto(binding.etLoginSenha.getText().toString())) {
-                binding.etLoginSenha.setError("Erro: Informe a senha");
-                binding.etLoginSenha.requestFocus();
-                return;
-            }
+        binding.bLoginEntrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Validador.validaTexto(binding.etEmailUsuario.getText().toString())) {
+                    binding.etEmailUsuario.setError("Erro: Informe o Email");
+                    binding.etEmailUsuario.requestFocus();
+                    return;
+                }else if(!Validador.validaEmail(binding.etEmailUsuario.getText().toString())) {
+                    binding.etEmailUsuario.setError("Erro: Informe um Email Válido");
+                    binding.etEmailUsuario.requestFocus();
+                    return;
+                }
+                if (!Validador.validaTexto(binding.etLoginSenha.getText().toString())) {
+                    binding.etLoginSenha.setError("Erro: Informe a senha");
+                    binding.etLoginSenha.requestFocus();
+                    return;
+                }
 
-            String email = binding.etEmailUsuario.getText().toString();
-            String senha = binding.etLoginSenha.getText().toString();
+                String email = binding.etEmailUsuario.getText().toString();
+                String senha = binding.etLoginSenha.getText().toString();
 
-            Usuario usuario = new Usuario(email, senha);
-            mViewModel.logarUsuario(usuario);
+                if(senha.equals("banana") && email.equals("viniciusgmelz@gmail.com")){
+                    Navigation.findNavController(view).navigate(R.id.acao_loginFragment_para_cadastroFragment);
+                }
+            }
         });
 
         binding.tvLoginCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 limpaCampos();
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_cadastroFragment);
+                Navigation.findNavController(view).navigate(R.id.acao_loginFragment_para_cadastroFragment);
             }
         });
     }
@@ -77,7 +82,7 @@ public class LoginFragment extends Fragment {
         @Override
         public void onChanged(Usuario usuario) {
             if (usuario != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_cadastroFragment);
+                Navigation.findNavController(requireView()).navigate(R.id.acao_loginFragment_para_cadastroFragment);
             } else {
                 Toast.makeText(getContext(), "Erro: usuário e/ou senha inválidos", Toast.LENGTH_SHORT).show();
             }

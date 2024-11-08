@@ -6,4 +6,12 @@
     </style>
 
     <style name="Theme.AplicativoGerenciadorDeVeiculos" parent="Base.Theme.AplicativoGerenciadorDeVeiculos" />
+    <style name="Theme.AplicativoGerenciadorDeVeiculos.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.AplicativoGerenciadorDeVeiculos.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.AplicativoGerenciadorDeVeiculos.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

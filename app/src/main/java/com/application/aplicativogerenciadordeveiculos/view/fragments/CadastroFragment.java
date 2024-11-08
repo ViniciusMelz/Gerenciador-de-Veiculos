@@ -14,18 +14,12 @@ import android.view.ViewGroup;
 
 import com.application.aplicativogerenciadordeveiculos.R;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentCadastroBinding;
-import com.application.aplicativogerenciadordeveiculos.databinding.FragmentLoginBinding;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.CadastroViewModel;
-import com.application.aplicativogerenciadordeveiculos.view.viewModel.LoginViewModel;
 
 public class CadastroFragment extends Fragment {
 
     private CadastroViewModel mViewModel;
     FragmentCadastroBinding binding;
-
-    public static CadastroFragment newInstance() {
-        return new CadastroFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

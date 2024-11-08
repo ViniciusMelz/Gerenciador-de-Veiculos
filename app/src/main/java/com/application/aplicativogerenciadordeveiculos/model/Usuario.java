@@ -1,6 +1,10 @@
 package com.application.aplicativogerenciadordeveiculos.model;
 
-public class Usuario {
+import androidx.navigation.NavType;
+
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
     int id;
     String nome;
     String email;

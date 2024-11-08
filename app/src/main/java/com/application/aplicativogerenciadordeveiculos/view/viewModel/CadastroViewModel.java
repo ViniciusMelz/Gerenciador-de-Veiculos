@@ -8,15 +8,17 @@ import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 public class CadastroViewModel extends ViewModel {
     private MutableLiveData<Boolean> mResultado;
 
-    public CadastroViewModel(MutableLiveData<Boolean> mResultado) {
-        this.mResultado = mResultado;
+    public CadastroViewModel() {
+        this.mResultado = new MutableLiveData<>();
     }
-
     public MutableLiveData<Boolean> getmResultado() {
         return mResultado;
     }
 
-    public void inserirUsuario(Usuario usuario) {
+    public void limpaEstado() {
+        mResultado = new MutableLiveData<>();
+    }
+    public void cadastrarUsuario(Usuario usuario) {
 
     }
 }
