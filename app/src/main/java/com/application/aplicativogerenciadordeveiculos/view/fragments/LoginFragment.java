@@ -100,4 +100,26 @@ public class LoginFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // limpando os campos na tela quando "volta"
+        limpaCampos();
+        // escondendo a ToolBar e BottomNavigation
+        if (requireActivity() instanceof MainActivity) {
+            ((MainActivity) requireActivity()).escondeBottomNavigation();
+            ((MainActivity) requireActivity()).getSupportActionBar().hide();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // mostrando a ToolBar e BottomNavigation
+        if (requireActivity() instanceof MainActivity) {
+            ((MainActivity) requireActivity()).mostraBottomNavigation();
+            ((MainActivity) requireActivity()).getSupportActionBar().show();
+        }
+    }
 }
