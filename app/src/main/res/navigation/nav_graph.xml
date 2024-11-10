@@ -12,10 +12,31 @@
         <action
             android:id="@+id/acao_loginFragment_para_cadastroFragment"
             app:destination="@id/cadastroFragment" />
+        <action
+            android:id="@+id/acao_loginFragment_para_menuPrincipalFragment"
+            app:destination="@id/menuPrincipalFragment" />
+        <action
+            android:id="@+id/acao_loginFragment_para_trocaSenhaFragment"
+            app:destination="@id/trocaSenhaFragment" />
     </fragment>
     <fragment
         android:id="@+id/cadastroFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.CadastroFragment"
         android:label="fragment_cadastro"
         tools:layout="@layout/fragment_cadastro" />
+    <fragment
+        android:id="@+id/menuPrincipalFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.MenuPrincipalFragment"
+        android:label="fragment_menu_principal"
+        tools:layout="@layout/fragment_menu_principal" />
+    <action
+        android:id="@+id/acao_global_loginFragment"
+        app:destination="@id/loginFragment" />
+    <fragment
+        android:id="@+id/trocaSenhaFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.TrocaSenhaFragment"
+        android:label="TrocaSenhaFragment" />
+    <action
+        android:id="@+id/acao_global_trocaSenhaFragment"
+        app:destination="@id/trocaSenhaFragment" />
 </navigation>

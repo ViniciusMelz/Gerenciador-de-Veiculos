@@ -22,6 +22,8 @@ import com.application.aplicativogerenciadordeveiculos.databinding.FragmentLogin
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.LoginViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
 
@@ -46,26 +48,21 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!Validador.validaTexto(binding.etEmailUsuario.getText().toString())) {
-                    binding.etEmailUsuario.setError("Erro: Informe o Email");
-                    binding.etEmailUsuario.requestFocus();
-                    return;
-                }else if(!Validador.validaEmail(binding.etEmailUsuario.getText().toString())) {
-                    binding.etEmailUsuario.setError("Erro: Informe um Email Válido");
+                    binding.etEmailUsuario.setError("ERRO: Informe o Email!");
                     binding.etEmailUsuario.requestFocus();
                     return;
                 }
                 if (!Validador.validaTexto(binding.etLoginSenha.getText().toString())) {
-                    binding.etLoginSenha.setError("Erro: Informe a senha");
+                    binding.etLoginSenha.setError("ERRO: Informe a senha!");
                     binding.etLoginSenha.requestFocus();
                     return;
                 }
 
                 String email = binding.etEmailUsuario.getText().toString();
                 String senha = binding.etLoginSenha.getText().toString();
+                Usuario usuario = new Usuario(email, senha);
 
-                if(senha.equals("banana") && email.equals("viniciusgmelz@gmail.com")){
-                    Navigation.findNavController(view).navigate(R.id.acao_loginFragment_para_cadastroFragment);
-                }
+                mViewModel.logarUsuario(usuario);
             }
         });
 
@@ -82,9 +79,10 @@ public class LoginFragment extends Fragment {
         @Override
         public void onChanged(Usuario usuario) {
             if (usuario != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.acao_loginFragment_para_cadastroFragment);
+                Navigation.findNavController(requireView()).navigate(R.id.acao_loginFragment_para_menuPrincipalFragment);
             } else {
-                Toast.makeText(getContext(), "Erro: usuário e/ou senha inválidos", Toast.LENGTH_SHORT).show();
+                String erro = mViewModel.getErroLogin();
+                Toast.makeText(getContext(), "ERRO: " + erro, Toast.LENGTH_LONG).show();
             }
 
         }
@@ -99,14 +97,13 @@ public class LoginFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        mViewModel.limpaEstado();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // limpando os campos na tela quando "volta"
         limpaCampos();
-        // escondendo a ToolBar e BottomNavigation
         if (requireActivity() instanceof MainActivity) {
             ((MainActivity) requireActivity()).escondeBottomNavigation();
             ((MainActivity) requireActivity()).getSupportActionBar().hide();
@@ -116,10 +113,23 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        // mostrando a ToolBar e BottomNavigation
         if (requireActivity() instanceof MainActivity) {
             ((MainActivity) requireActivity()).mostraBottomNavigation();
             ((MainActivity) requireActivity()).getSupportActionBar().show();
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+        if(usuario != null) {
+            String email = usuario.getEmail();
+            Usuario usuarioLogado = new Usuario(email);
+            mViewModel.setUsuarioLogado(usuarioLogado);
+        }
+    }
+
+
+
 }

@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/visualizaRelatorioFragment"
-        android:title="Relatorio"/>
+        android:title="Relatorio"
+        android:icon="@drawable/icone_relatorio"/>
     <item
         android:id="@+id/visualizaSaidasFragment"
-        android:title="Saidas"/>
+        android:title="Saidas"
+        android:icon="@drawable/icone_saida"/>
     <item
         android:id="@+id/visualizaEntradasFragment"
-        android:title="Entradas"/>
+        android:title="Entradas"
+        android:icon="@drawable/icone_entrada"/>
 </menu>

@@ -49,7 +49,7 @@ public class CadastroViewModel extends ViewModel {
                 } catch (FirebaseAuthUserCollisionException e) {
                     erroCadastro = "Email já em uso, escolha outro!";
                 } catch (FirebaseNetworkException e) {
-                    erroCadastro = "Erro ao cadastrar usuário, verifique sua conexão com a internet!";
+                    erroCadastro = "Verifique sua conexão com a internet!";
                 } catch (Exception e) {
                     erroCadastro = "Erro ao cadastrar usuário, tente novamente!";
                 }

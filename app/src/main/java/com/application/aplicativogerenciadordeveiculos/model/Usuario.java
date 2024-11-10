@@ -5,12 +5,12 @@ import androidx.navigation.NavType;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
-    int id;
+    String id;
     String nome;
     String email;
     String senha;
 
-    public Usuario(int id, String nome, String email, String senha) {
+    public Usuario(String id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -28,14 +28,18 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
+    public Usuario(String email) {
+        this.email = email;
+    }
+
     public Usuario() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

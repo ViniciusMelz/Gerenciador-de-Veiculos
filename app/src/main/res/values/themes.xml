@@ -13,5 +13,7 @@
 
     <style name="Theme.AplicativoGerenciadorDeVeiculos.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.AplicativoGerenciadorDeVeiculos.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.AplicativoGerenciadorDeVeiculos.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/btnTrocarSenha"
+        android:title="Trocar Senha"
+        android:icon="@drawable/icone_senha"/>
+    <item
+        android:id="@+id/btnSair"
+        android:title="Sair"
+        android:icon="@drawable/icone_logout"/>
+</menu>
