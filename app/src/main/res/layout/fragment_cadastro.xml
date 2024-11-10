@@ -17,7 +17,7 @@
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="150dp"
         android:textSize="80px"
         android:textStyle="bold"/>
 
@@ -31,7 +31,7 @@
         android:background="@color/white"
         android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="80dp"
         android:height="40dp"
         android:hint="Nome"
         android:padding="10dp"

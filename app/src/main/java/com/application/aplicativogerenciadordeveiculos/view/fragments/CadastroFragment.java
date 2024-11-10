@@ -19,6 +19,7 @@ import com.application.aplicativogerenciadordeveiculos.R;
 import com.application.aplicativogerenciadordeveiculos.Utils.Validador;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentCadastroBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
+import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.CadastroViewModel;
 
 public class CadastroFragment extends Fragment {
@@ -43,22 +44,27 @@ public class CadastroFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!Validador.validaTexto(binding.etCadastroUsuarioNome.getText().toString())) {
-                    binding.etCadastroUsuarioNome.setError("ERRO: informe o nome!");
+                    binding.etCadastroUsuarioNome.setError("ERRO: Informe o nome!");
                     binding.etCadastroUsuarioNome.requestFocus();
                     return;
                 }
                 if (!Validador.validaEmail(binding.etCadastroUsuarioEmail.getText().toString())) {
-                    binding.etCadastroUsuarioEmail.setError("ERRO: informe um email válido!");
+                    binding.etCadastroUsuarioEmail.setError("ERRO: Informe um email válido!");
                     binding.etCadastroUsuarioEmail.requestFocus();
                     return;
                 }
                 if (!Validador.validaTexto(binding.etCadastroUsuarioSenha.getText().toString())) {
-                    binding.etCadastroUsuarioSenha.setError("ERRO: informe uma senha!");
+                    binding.etCadastroUsuarioSenha.setError("ERRO: Informe uma senha!");
+                    binding.etCadastroUsuarioSenha.requestFocus();
+                    return;
+                }
+                if (!Validador.validaSenha(binding.etCadastroUsuarioSenha.getText().toString())) {
+                    binding.etCadastroUsuarioSenha.setError("ERRO: A senha deve conter no mínimo 6 caracteres!");
                     binding.etCadastroUsuarioSenha.requestFocus();
                     return;
                 }
                 if (!Validador.validaTexto(binding.etCadastroUsuarioSenhaRepeticao.getText().toString())) {
-                    binding.etCadastroUsuarioSenha.setError("ERRO: informe a repetição da senha!");
+                    binding.etCadastroUsuarioSenha.setError("ERRO: Informe a repetição da senha!");
                     binding.etCadastroUsuarioSenha.requestFocus();
                     return;
                 }
@@ -93,7 +99,16 @@ public class CadastroFragment extends Fragment {
             limpaCampos();
             Navigation.findNavController(requireView()).popBackStack();
         } else {
-            Toast.makeText(getContext(), "ERRO: usuário não cadastrado.", Toast.LENGTH_LONG).show();
+            String erro = mViewModel.getErroCadastro();
+            if(erro.equals("Digite uma senha com no mínimo 6 caracteres!")){
+                binding.etCadastroUsuarioSenha.setError("ERRO: " + erro);
+                binding.etCadastroUsuarioSenha.requestFocus();
+            }else if(erro.equals("Digite um email válido!") || erro.equals("Email já em uso, escolha outro!")){
+                binding.etCadastroUsuarioEmail.setError("ERRO: " + erro);
+                binding.etCadastroUsuarioEmail.requestFocus();
+            }else{
+                Toast.makeText(getContext(), "ERRO: " + erro, Toast.LENGTH_LONG).show();
+            }
         }
     };
 
@@ -108,5 +123,27 @@ public class CadastroFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // limpando os campos na tela quando "volta"
+        limpaCampos();
+        // escondendo a ToolBar e BottomNavigation
+        if (requireActivity() instanceof MainActivity) {
+            ((MainActivity) requireActivity()).escondeBottomNavigation();
+            ((MainActivity) requireActivity()).getSupportActionBar().hide();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // mostrando a ToolBar e BottomNavigation
+        if (requireActivity() instanceof MainActivity) {
+            ((MainActivity) requireActivity()).mostraBottomNavigation();
+            ((MainActivity) requireActivity()).getSupportActionBar().show();
+        }
     }
 }

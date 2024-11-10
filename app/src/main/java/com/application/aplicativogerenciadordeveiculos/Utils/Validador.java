@@ -20,4 +20,14 @@ public class Validador {
         }
         return resultado;
     }
+
+    public static boolean validaSenha(String senha) {
+        boolean resultado;
+        if (senha.length() >= 6) {
+            resultado = true;
+        } else {
+            resultado = false;
+        }
+        return resultado;
+    }
 }

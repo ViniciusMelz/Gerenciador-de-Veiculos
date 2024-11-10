@@ -43,4 +43,17 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+    <string name="erroFireBaseSenhaFraca">
+        Digite uma senha com no mínimo 6 caracteres!
+    </string>
+    <string name="erroFireBaseEmailInvalido">
+        Digite um email válido!
+    </string>
+    <string name="erroFireBaseEmailRepetido">
+        Email já em uso, escolha outro!
+    </string>
+    <string name="erroFireBaseSemInternet">
+        Erro ao cadastrar usuário, verifique sua conexão com a internet!
+    </string>
 </resources>
