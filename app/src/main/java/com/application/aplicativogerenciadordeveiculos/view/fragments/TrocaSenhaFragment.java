@@ -85,7 +85,7 @@ public class TrocaSenhaFragment extends Fragment {
         public void onChanged(String email) {
             if (email != null) {
                 Toast.makeText(getContext(), "Email enviado com Sucesso!", Toast.LENGTH_LONG).show();
-                Navigation.findNavController(requireView()).navigate(R.id.acao_trocaSenhaFragment_para_loginFragment);
+                Navigation.findNavController(requireView()).popBackStack();
             } else {
                 String erro = mViewModel.getErroRecuperacaoSenha();
                 Toast.makeText(getContext(), "ERRO: " + erro, Toast.LENGTH_LONG).show();
