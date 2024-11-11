@@ -17,6 +17,7 @@ import com.application.aplicativogerenciadordeveiculos.R;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentCadastroBinding;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentMenuPrincipalBinding;
 import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
+import com.application.aplicativogerenciadordeveiculos.view.viewModel.InformacoesViewModel;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.MenuPrincipalViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,6 +25,7 @@ public class MenuPrincipalFragment extends Fragment {
 
     private MenuPrincipalViewModel mViewModel;
     FragmentMenuPrincipalBinding binding;
+    InformacoesViewModel informacoesViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -36,6 +38,7 @@ public class MenuPrincipalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MenuPrincipalViewModel.class);
+        informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
     }
 
     @Override

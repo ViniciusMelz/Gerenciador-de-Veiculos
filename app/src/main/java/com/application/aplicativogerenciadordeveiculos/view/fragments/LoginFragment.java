@@ -21,6 +21,7 @@ import com.application.aplicativogerenciadordeveiculos.Utils.Validador;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentLoginBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
+import com.application.aplicativogerenciadordeveiculos.view.viewModel.InformacoesViewModel;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.LoginViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +30,8 @@ public class LoginFragment extends Fragment {
 
     FragmentLoginBinding binding;
     private LoginViewModel mViewModel;
+
+    InformacoesViewModel informacoesViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -41,6 +44,8 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+        informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
 
         mViewModel.getmUsuarioLogado().observe(getViewLifecycleOwner(), observaAutenticacaoUsuario);
 
@@ -66,11 +71,19 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        binding.tvLoginCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
+        binding.bLoginCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 limpaCampos();
                 Navigation.findNavController(view).navigate(R.id.acao_loginFragment_para_cadastroFragment);
+            }
+        });
+
+        binding.tvEsqueciSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                limpaCampos();
+                Navigation.findNavController(view).navigate(R.id.acao_loginFragment_para_trocaSenhaFragment);
             }
         });
     }
@@ -79,6 +92,7 @@ public class LoginFragment extends Fragment {
         @Override
         public void onChanged(Usuario usuario) {
             if (usuario != null) {
+                informacoesViewModel.inicializaUsuarioLogado(usuario);
                 Navigation.findNavController(requireView()).navigate(R.id.acao_loginFragment_para_menuPrincipalFragment);
             } else {
                 String erro = mViewModel.getErroLogin();

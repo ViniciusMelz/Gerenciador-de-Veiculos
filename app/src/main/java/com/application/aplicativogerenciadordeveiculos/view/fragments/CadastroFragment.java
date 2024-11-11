@@ -21,6 +21,7 @@ import com.application.aplicativogerenciadordeveiculos.databinding.FragmentCadas
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.CadastroViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class CadastroFragment extends Fragment {
 
@@ -64,8 +65,8 @@ public class CadastroFragment extends Fragment {
                     return;
                 }
                 if (!Validador.validaTexto(binding.etCadastroUsuarioSenhaRepeticao.getText().toString())) {
-                    binding.etCadastroUsuarioSenha.setError("ERRO: Informe a repetição da senha!");
-                    binding.etCadastroUsuarioSenha.requestFocus();
+                    binding.etCadastroUsuarioSenhaRepeticao.setError("ERRO: Informe a repetição da senha!");
+                    binding.etCadastroUsuarioSenhaRepeticao.requestFocus();
                     return;
                 }
                 if (!binding.etCadastroUsuarioSenha.getText().toString().equals(binding.etCadastroUsuarioSenhaRepeticao.getText().toString())) {
@@ -97,6 +98,8 @@ public class CadastroFragment extends Fragment {
         if (aBoolean) {
             Toast.makeText(getContext(), "Usuário cadastrado com sucesso", Toast.LENGTH_LONG).show();
             limpaCampos();
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.signOut();
             Navigation.findNavController(requireView()).popBackStack();
         } else {
             String erro = mViewModel.getErroCadastro();

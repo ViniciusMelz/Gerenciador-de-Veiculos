@@ -3,6 +3,7 @@ package com.application.aplicativogerenciadordeveiculos.view.activities;
 import android.os.Bundle;
 
 import com.application.aplicativogerenciadordeveiculos.R;
+import com.application.aplicativogerenciadordeveiculos.view.viewModel.InformacoesViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import androidx.core.view.WindowCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -30,9 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     NavController navController;
 
+    InformacoesViewModel informacoesViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        informacoesViewModel = new ViewModelProvider(this).get(InformacoesViewModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -44,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(id == R.id.btnSair){
             FirebaseAuth.getInstance().signOut();
+            informacoesViewModel.limpaEstado();
             navController.navigate(R.id.acao_global_loginFragment, null,
                     new NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build());
         }

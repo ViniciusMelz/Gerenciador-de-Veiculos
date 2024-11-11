@@ -35,7 +35,11 @@
     <fragment
         android:id="@+id/trocaSenhaFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.TrocaSenhaFragment"
-        android:label="TrocaSenhaFragment" />
+        android:label="TrocaSenhaFragment" >
+        <action
+            android:id="@+id/acao_trocaSenhaFragment_para_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <action
         android:id="@+id/acao_global_trocaSenhaFragment"
         app:destination="@id/trocaSenhaFragment" />
