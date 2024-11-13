@@ -56,4 +56,25 @@
     <string name="erroFireBaseSemInternet">
         Erro ao cadastrar usuário, verifique sua conexão com a internet!
     </string>
+
+    <string-array name="tipoVeiculos" >
+        <item>
+            -- Selecione um Tipo --
+        </item>
+        <item>
+            Moto
+        </item>
+        <item>
+            Carro
+        </item>
+        <item>
+            Caminhão
+        </item>
+        <item>
+            Ônibus
+        </item>
+        <item>
+            Outro
+        </item>
+    </string-array>
 </resources>

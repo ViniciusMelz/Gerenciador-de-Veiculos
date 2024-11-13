@@ -44,17 +44,17 @@ public class CadastroFragment extends Fragment {
         binding.bCadastroSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!Validador.validaTexto(binding.etCadastroUsuarioNome.getText().toString())) {
+                if (!Validador.validaTexto(binding.etCadastroUsuarioNome.getText().toString().trim())) {
                     binding.etCadastroUsuarioNome.setError("ERRO: Informe o nome!");
                     binding.etCadastroUsuarioNome.requestFocus();
                     return;
                 }
-                if (!Validador.validaEmail(binding.etCadastroUsuarioEmail.getText().toString())) {
+                if (!Validador.validaEmail(binding.etCadastroUsuarioEmail.getText().toString().trim())) {
                     binding.etCadastroUsuarioEmail.setError("ERRO: Informe um email válido!");
                     binding.etCadastroUsuarioEmail.requestFocus();
                     return;
                 }
-                if (!Validador.validaTexto(binding.etCadastroUsuarioSenha.getText().toString())) {
+                if (!Validador.validaTexto(binding.etCadastroUsuarioSenha.getText().toString().trim())) {
                     binding.etCadastroUsuarioSenha.setError("ERRO: Informe uma senha!");
                     binding.etCadastroUsuarioSenha.requestFocus();
                     return;
@@ -64,7 +64,7 @@ public class CadastroFragment extends Fragment {
                     binding.etCadastroUsuarioSenha.requestFocus();
                     return;
                 }
-                if (!Validador.validaTexto(binding.etCadastroUsuarioSenhaRepeticao.getText().toString())) {
+                if (!Validador.validaTexto(binding.etCadastroUsuarioSenhaRepeticao.getText().toString().trim())) {
                     binding.etCadastroUsuarioSenhaRepeticao.setError("ERRO: Informe a repetição da senha!");
                     binding.etCadastroUsuarioSenhaRepeticao.requestFocus();
                     return;

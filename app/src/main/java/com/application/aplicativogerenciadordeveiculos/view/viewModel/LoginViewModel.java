@@ -12,6 +12,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginViewModel extends ViewModel {
     private MutableLiveData<Usuario> mUsuarioLogado;
@@ -43,6 +47,7 @@ public class LoginViewModel extends ViewModel {
         String email = usuario.getEmail();
         String senha = usuario.getSenha();
         FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -58,6 +63,13 @@ public class LoginViewModel extends ViewModel {
                     erroLogin = "Erro ao logar usuário, tente novamente!";
                 }
                 mUsuarioLogado.postValue(null);
+            }
+        });
+
+        db.collection("Usuários").document(email).addSnapshotListener((documento, error) -> {
+            if(documento != null){
+                usuario.setNome(documento.getString("nome"));
+                mUsuarioLogado.postValue(usuario);
             }
         });
     }

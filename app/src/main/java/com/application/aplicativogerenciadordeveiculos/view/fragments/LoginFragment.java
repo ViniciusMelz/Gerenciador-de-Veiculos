@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -52,12 +53,12 @@ public class LoginFragment extends Fragment {
         binding.bLoginEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!Validador.validaTexto(binding.etEmailUsuario.getText().toString())) {
+                if (!Validador.validaTexto(binding.etEmailUsuario.getText().toString().trim())) {
                     binding.etEmailUsuario.setError("ERRO: Informe o Email!");
                     binding.etEmailUsuario.requestFocus();
                     return;
                 }
-                if (!Validador.validaTexto(binding.etLoginSenha.getText().toString())) {
+                if (!Validador.validaTexto(binding.etLoginSenha.getText().toString().trim())) {
                     binding.etLoginSenha.setError("ERRO: Informe a senha!");
                     binding.etLoginSenha.requestFocus();
                     return;

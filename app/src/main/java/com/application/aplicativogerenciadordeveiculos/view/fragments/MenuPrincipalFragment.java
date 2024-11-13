@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,12 +40,20 @@ public class MenuPrincipalFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MenuPrincipalViewModel.class);
         informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
+
+        binding.bAdicionarVeiculo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.acao_menuPrincipalFragment_para_cadastroVeiculoFragment);
+            }
+        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        mViewModel.limpaEstado();
     }
 
     @Override
