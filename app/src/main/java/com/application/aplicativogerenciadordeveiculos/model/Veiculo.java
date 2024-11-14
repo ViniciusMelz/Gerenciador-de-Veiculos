@@ -8,13 +8,15 @@ public class Veiculo implements Serializable {
     private int ano;
     private String placa;
     private int tipo;
+    private String emailDono;
 
-    public Veiculo(String marca, String modelo, int ano, String placa, int tipo) {
+    public Veiculo(String marca, String modelo, int ano, String placa, int tipo, String emailDono) {
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
         this.placa = placa;
         this.tipo = tipo;
+        this.emailDono = emailDono;
     }
 
     public String getMarca() {
@@ -55,5 +57,29 @@ public class Veiculo implements Serializable {
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    public String getEmailDono() {
+        return emailDono;
+    }
+
+    public void setEmailDono(String emailDono) {
+        this.emailDono = emailDono;
+    }
+
+    public String getTipoLiteral() {
+        String retorno = "";
+        if (this.tipo == 1) {
+            retorno = "Moto";
+        } else if (this.tipo == 2) {
+            retorno = "Carro";
+        } else if (this.tipo == 3) {
+            retorno = "Caminhão";
+        } else if (this.tipo == 4) {
+            retorno = "Ônibus";
+        } else {
+            retorno = "Outro";
+        }
+        return retorno;
     }
 }

@@ -17,9 +17,9 @@ public class VeiculoAdapter extends RecyclerView.Adapter<VeiculoAdapter.MyViewHo
 
     private VeiculoAdapter.VeiculoOnClickListener VeiculoOnClickListener;
 
-    public VeiculoAdapter(List<Veiculo> listaVeiculos, VeiculoAdapter.VeiculoOnClickListener VeiculoOnClickListener) {
+    public VeiculoAdapter(List<Veiculo> listaVeiculos/*, VeiculoAdapter.VeiculoOnClickListener VeiculoOnClickListener*/) {
         this.listaVeiculos = listaVeiculos;
-        this.VeiculoOnClickListener = VeiculoOnClickListener;
+        //this.VeiculoOnClickListener = VeiculoOnClickListener;
     }
 
     @NonNull
