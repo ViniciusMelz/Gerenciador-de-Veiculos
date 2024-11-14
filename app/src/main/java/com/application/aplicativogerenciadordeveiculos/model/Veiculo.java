@@ -1,6 +1,8 @@
 package com.application.aplicativogerenciadordeveiculos.model;
 
-public class Veiculo {
+import java.io.Serializable;
+
+public class Veiculo implements Serializable {
     private String marca;
     private String modelo;
     private int ano;

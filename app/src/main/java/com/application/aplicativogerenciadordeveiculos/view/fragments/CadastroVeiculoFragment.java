@@ -1,5 +1,6 @@
 package com.application.aplicativogerenciadordeveiculos.view.fragments;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.application.aplicativogerenciadordeveiculos.view.activities.MainActiv
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.CadastroVeiculoViewModel;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.InformacoesViewModel;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.LoginViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class CadastroVeiculoFragment extends Fragment {
 
@@ -46,11 +48,20 @@ public class CadastroVeiculoFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(CadastroVeiculoViewModel.class);
         informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
 
+        mViewModel.getResultado().observe(getViewLifecycleOwner(), observaCadastroVeiculo);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            mViewModel.setmVeiculoEdicao((Veiculo) args.getSerializable("veiculo"));
+            carregaVeiculoEdicao();
+        } else mViewModel.setmVeiculoEdicao(null);
+
         binding.bCadastrarVeiculo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (binding.spCadastroTipo.getSelectedItemPosition() == 0) {
                     Toast.makeText(getContext(), "ERRO: Informe o tipo do veículo!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (!Validador.validaTexto(binding.etCadastroMarca.getText().toString().trim())) {
                     binding.etCadastroMarca.setError("ERRO: Informe a Marca!");
@@ -81,7 +92,7 @@ public class CadastroVeiculoFragment extends Fragment {
                 String placa = binding.etCadastroPlaca.getText().toString();
 
                 Veiculo veiculo = null;
-                if (mViewModel.getVeiculoEdicao() == null) {
+                if (mViewModel.getVeiculoEdicao().getValue() == null) {
                     veiculo = new Veiculo(marca, modelo, ano, placa, tipo);
                     mViewModel.inserirVeiculo(veiculo);
                     limpaCampos();
@@ -109,12 +120,31 @@ public class CadastroVeiculoFragment extends Fragment {
         });
     }
 
+    Observer<Boolean> observaCadastroVeiculo = aBoolean -> {
+        if (aBoolean) {
+            Toast.makeText(getContext(), "Veículo cadastrado com sucesso", Toast.LENGTH_LONG).show();
+            limpaCampos();
+            Navigation.findNavController(requireView()).popBackStack();
+        } else {
+            String erro = mViewModel.getErroCadastro();
+            Toast.makeText(getContext(), "ERRO: " + erro, Toast.LENGTH_LONG).show();
+        }
+    };
+
     public void limpaCampos() {
         binding.spCadastroTipo.setSelection(0);
         binding.etCadastroMarca.setText("");
         binding.etCadastroModelo.setText("");
         binding.etCadastroAno.setText("");
         binding.etCadastroPlaca.setText("");
+    }
+
+    public void carregaVeiculoEdicao() {
+        binding.etCadastroMarca.setText(mViewModel.getVeiculoEdicao().getValue().getMarca());
+        binding.etCadastroModelo.setText(mViewModel.getVeiculoEdicao().getValue().getModelo());
+        binding.etCadastroAno.setText(String.valueOf(mViewModel.getVeiculoEdicao().getValue().getAno()));
+        binding.etCadastroPlaca.setText(mViewModel.getVeiculoEdicao().getValue().getPlaca());
+        binding.spCadastroTipo.setSelection(mViewModel.getVeiculoEdicao().getValue().getTipo());
     }
 
     @Override
