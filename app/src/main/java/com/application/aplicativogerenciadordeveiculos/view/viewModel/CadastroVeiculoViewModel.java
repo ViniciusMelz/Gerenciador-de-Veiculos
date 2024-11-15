@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -58,6 +59,7 @@ public class CadastroVeiculoViewModel extends ViewModel {
         veiculoMap.put("ano", veiculo.getAno());
         veiculoMap.put("placa", veiculo.getPlaca());
         veiculoMap.put("tipo", veiculo.getTipo());
+        veiculoMap.put("email", veiculo.getUsuarioDono().getEmail());
 
         db.collection("Veículos").document().set(veiculoMap).addOnCompleteListener(taskSalvamento -> {
             if(taskSalvamento.isSuccessful()){

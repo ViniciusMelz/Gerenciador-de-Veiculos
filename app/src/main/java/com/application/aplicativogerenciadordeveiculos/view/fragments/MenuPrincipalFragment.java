@@ -108,14 +108,14 @@ public class MenuPrincipalFragment extends Fragment {
                             placa = document.getString("placa");
                             tipo = document.getLong("tipo").intValue();
                             emailDono = document.getString("email");
-                            Veiculo veiculo = new Veiculo(marca, modelo, ano, placa, tipo, emailDono);
+                            Veiculo veiculo = new Veiculo(marca, modelo, ano, placa, tipo, mViewModel.getmUsuarioLogado().getValue());
                             informacoesViewModel.adicionarVeiculosNaLista(veiculo);
                         }
                     }else{
                         Toast.makeText(getContext(), "Nenhum veículo encontrado, cadastre um veículo!", Toast.LENGTH_LONG).show();
                     }
                 });
-        mViewModel.setMlistaVeiculos(informacoesViewModel.getListaVeiculos());
+        mViewModel.setmListaVeiculos(informacoesViewModel.getListaVeiculos());
     }
 
     public void atualizaListagem(ArrayList<Veiculo> listaVeiculos) {

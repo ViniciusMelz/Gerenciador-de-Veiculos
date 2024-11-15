@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
 
 import java.util.ArrayList;
@@ -26,10 +27,6 @@ public class MenuPrincipalViewModel extends ViewModel {
         this.mResultado = new MutableLiveData<>();
     }
 
-    public MutableLiveData<ArrayList<Veiculo>> getListaUsuarios() {
-        return mlistaVeiculos;
-    }
-
     public MutableLiveData<Boolean> getResultado() {
         return mResultado;
     }
@@ -37,7 +34,7 @@ public class MenuPrincipalViewModel extends ViewModel {
     public void excluirVeiculo(Veiculo veiculo){
     }
 
-    public void setMlistaVeiculos(MutableLiveData<ArrayList<Veiculo>> mlistaVeiculos) {
+    public void setmListaVeiculos(MutableLiveData<ArrayList<Veiculo>> mlistaVeiculos) {
         this.mlistaVeiculos = mlistaVeiculos;
     }
 
@@ -47,7 +44,16 @@ public class MenuPrincipalViewModel extends ViewModel {
 
     public void adicionarVeiculosNaLista(Veiculo veiculo) {
         ArrayList<Veiculo> listaVeiculos = getListaVeiculos().getValue();
-        listaVeiculos.add(veiculo);
+        if(veiculo != null){
+            if(listaVeiculos != null) {
+                listaVeiculos.add(veiculo);
+            }else{
+                ArrayList<Veiculo> lista = new ArrayList<>();
+                MutableLiveData<ArrayList<Veiculo>> mutableLiveData = new MutableLiveData();
+                mutableLiveData.postValue(lista);
+                this.setmListaVeiculos(mutableLiveData);
+            }
+        }
         mlistaVeiculos.setValue(listaVeiculos);
     }
 

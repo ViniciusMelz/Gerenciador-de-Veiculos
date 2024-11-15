@@ -6,7 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.application.aplicativogerenciadordeveiculos.databinding.ItemListRowEventoBinding;
+import com.application.aplicativogerenciadordeveiculos.R;
+import com.application.aplicativogerenciadordeveiculos.databinding.ItemListRowVeiculoBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
 
 import java.text.SimpleDateFormat;
@@ -25,22 +26,34 @@ public class VeiculoAdapter extends RecyclerView.Adapter<VeiculoAdapter.MyViewHo
     @NonNull
     @Override
     public VeiculoAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemListRowEventoBinding itemListRowEventoBinding = ItemListRowEventoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemListRowVeiculoBinding itemListRowEventoBinding = ItemListRowVeiculoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new VeiculoAdapter.MyViewHolder(itemListRowEventoBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Veiculo veiculo = listaVeiculos.get(position);
-        holder.itemListRowBinding.tvItemPlaca.setText(veiculo.getPlaca());
+        holder.itemListRowBinding.tvItemPlaca.setText(veiculo.getPlaca().toUpperCase());
         holder.itemListRowBinding.tvItemMarcaModelo.setText(veiculo.getMarca() + " " + veiculo.getModelo());
-        holder.itemListRowBinding.tvItemAno.setText(veiculo.getAno());
+        holder.itemListRowBinding.tvItemAno.setText(Integer.toString(veiculo.getAno()));
 
-        if (VeiculoOnClickListener != null) {
+        if(veiculo.getTipo() == 1){
+            holder.itemListRowBinding.ivTipoVeiculo.setImageResource(R.drawable.ic_moto);
+        }else if(veiculo.getTipo() == 2){
+            holder.itemListRowBinding.ivTipoVeiculo.setImageResource(R.drawable.ic_carro);
+        }else if(veiculo.getTipo() == 3){
+            holder.itemListRowBinding.ivTipoVeiculo.setImageResource(R.drawable.ic_caminhao);
+        }else if(veiculo.getTipo() == 4){
+            holder.itemListRowBinding.ivTipoVeiculo.setImageResource(R.drawable.ic_onibus);
+        }else{
+            holder.itemListRowBinding.ivTipoVeiculo.setImageResource(R.drawable.ic_roda);
+        }
+
+        /*if (VeiculoOnClickListener != null) {
             holder.itemListRowBinding.getRoot().setOnClickListener(view -> {
                 VeiculoOnClickListener.onClickVeiculo(holder.itemView, position, veiculo);
             });
-        }
+        }*/
     }
 
     @Override
@@ -49,8 +62,8 @@ public class VeiculoAdapter extends RecyclerView.Adapter<VeiculoAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ItemListRowEventoBinding itemListRowBinding;
-        public MyViewHolder(ItemListRowEventoBinding itemListRowBinding) {
+        public ItemListRowVeiculoBinding itemListRowBinding;
+        public MyViewHolder(ItemListRowVeiculoBinding itemListRowBinding) {
             super(itemListRowBinding.getRoot());
             this.itemListRowBinding = itemListRowBinding;
         }

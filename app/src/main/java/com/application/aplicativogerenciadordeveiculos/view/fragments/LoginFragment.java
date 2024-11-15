@@ -144,7 +144,4 @@ public class LoginFragment extends Fragment {
             mViewModel.setUsuarioLogado(usuarioLogado);
         }
     }
-
-
-
 }
