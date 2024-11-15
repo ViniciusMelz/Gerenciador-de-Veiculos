@@ -93,12 +93,27 @@
         android:padding="10dp"
         android:textColor="@color/black"
         />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etCadastroQuilometragem"
+        app:layout_constraintTop_toBottomOf="@+id/etCadastroPlaca"
+        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="number"
+        android:maxLines="1"
+        android:background="@color/white"
+        android:layout_margin="10dp"
+        android:height="40dp"
+        android:hint="Quilometragem"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cadastrar Veículo"
         android:id="@+id/bCadastrarVeiculo"
-        app:layout_constraintTop_toBottomOf="@+id/etCadastroPlaca"
+        app:layout_constraintTop_toBottomOf="@+id/etCadastroQuilometragem"
         app:layout_constraintStart_toStartOf="parent"
         android:backgroundTint="@color/black"
         android:layout_margin="10dp"

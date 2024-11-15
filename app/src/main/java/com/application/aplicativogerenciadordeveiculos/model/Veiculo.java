@@ -11,8 +11,10 @@ public class Veiculo implements Serializable {
     private String placa;
     private int tipo;
     private Usuario usuarioDono;
+    private int quilometragem;
+    private float mediaCombustivel;
 
-    public Veiculo(String id, String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono) {
+    public Veiculo(String id, String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono, int quilometragem) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -20,6 +22,7 @@ public class Veiculo implements Serializable {
         this.placa = placa;
         this.tipo = tipo;
         this.usuarioDono = usuarioDono;
+        this.quilometragem = quilometragem;
     }
 
     public Veiculo(String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono) {
@@ -104,5 +107,21 @@ public class Veiculo implements Serializable {
             retorno = "Outro";
         }
         return retorno;
+    }
+
+    public int getQuilometragem() {
+        return quilometragem;
+    }
+
+    public void setQuilometragem(int quilometragem) {
+        this.quilometragem = quilometragem;
+    }
+
+    public float getMediaCombustivel() {
+        return mediaCombustivel;
+    }
+
+    public void setMediaCombustivel(float mediaCombustivel) {
+        this.mediaCombustivel = mediaCombustivel;
     }
 }

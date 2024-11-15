@@ -43,6 +43,7 @@ public class VeiculoAdapter extends RecyclerView.Adapter<VeiculoAdapter.MyViewHo
         holder.itemListRowBinding.tvItemPlaca.setText(veiculo.getPlaca().toUpperCase());
         holder.itemListRowBinding.tvItemMarcaModelo.setText(veiculo.getMarca() + " " + veiculo.getModelo());
         holder.itemListRowBinding.tvItemAno.setText(Integer.toString(veiculo.getAno()));
+        holder.itemListRowBinding.tvItemQuilometragem.setText(Integer.toString(veiculo.getQuilometragem()));
 
         if(veiculo.getTipo() == 1){
             holder.itemListRowBinding.ivTipoVeiculo.setImageResource(R.drawable.ic_moto);

@@ -86,9 +86,13 @@ public class CadastroVeiculoFragment extends Fragment {
                     binding.etCadastroAno.requestFocus();
                     return;
                 }
-
                 if (!Validador.validaTexto(binding.etCadastroPlaca.getText().toString().trim())) {
                     binding.etCadastroPlaca.setError("ERRO: Informe a Placa!");
+                    binding.etCadastroPlaca.requestFocus();
+                    return;
+                }
+                if (!Validador.validaTexto(binding.etCadastroQuilometragem.getText().toString().trim())) {
+                    binding.etCadastroPlaca.setError("ERRO: Informe a Quilometragem!");
                     binding.etCadastroPlaca.requestFocus();
                     return;
                 }
@@ -98,6 +102,7 @@ public class CadastroVeiculoFragment extends Fragment {
                 String modelo = binding.etCadastroModelo.getText().toString();
                 int ano = Integer.parseInt(binding.etCadastroAno.getText().toString());
                 String placa = binding.etCadastroPlaca.getText().toString();
+                int quilometragem = Integer.parseInt(binding.etCadastroQuilometragem.getText().toString());
 
                 Veiculo veiculo = null;
                 if (mViewModel.getVeiculoEdicao().getValue() == null) {
@@ -112,6 +117,7 @@ public class CadastroVeiculoFragment extends Fragment {
                     veiculo.setAno(ano);
                     veiculo.setPlaca(placa);
                     veiculo.setTipo(tipo);
+                    veiculo.setQuilometragem(quilometragem);
 
                     mViewModel.atualizarVeiculo(veiculo);
                     Toast.makeText(getContext(), "Veículo Atualizado com Sucesso!", Toast.LENGTH_LONG).show();
@@ -146,6 +152,7 @@ public class CadastroVeiculoFragment extends Fragment {
         binding.etCadastroModelo.setText("");
         binding.etCadastroAno.setText("");
         binding.etCadastroPlaca.setText("");
+        binding.etCadastroQuilometragem.setText("");
     }
 
     public void carregaVeiculoEdicao() {
@@ -154,7 +161,7 @@ public class CadastroVeiculoFragment extends Fragment {
         binding.etCadastroAno.setText(String.valueOf(mViewModel.getVeiculoEdicao().getValue().getAno()));
         binding.etCadastroPlaca.setText(mViewModel.getVeiculoEdicao().getValue().getPlaca());
         binding.spCadastroTipo.setSelection(mViewModel.getVeiculoEdicao().getValue().getTipo());
-
+        binding.etCadastroQuilometragem.setText(String.valueOf(mViewModel.getVeiculoEdicao().getValue().getQuilometragem()));
     }
 
     @Override

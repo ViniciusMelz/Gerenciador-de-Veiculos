@@ -60,6 +60,7 @@ public class CadastroVeiculoViewModel extends ViewModel {
         veiculoMap.put("placa", veiculo.getPlaca());
         veiculoMap.put("tipo", veiculo.getTipo());
         veiculoMap.put("email", veiculo.getUsuarioDono().getEmail());
+        veiculoMap.put("quilometragem", veiculo.getQuilometragem());
 
         db.collection("Veículos").document().set(veiculoMap).addOnCompleteListener(taskSalvamento -> {
             if(taskSalvamento.isSuccessful()){
@@ -84,7 +85,8 @@ public class CadastroVeiculoViewModel extends ViewModel {
                         "ano", veiculo.getAno(),
                         "placa", veiculo.getPlaca(),
                         "tipo", veiculo.getTipo(),
-                        "email", veiculo.getUsuarioDono().getEmail()).addOnCompleteListener(task -> {
+                        "email", veiculo.getUsuarioDono().getEmail(),
+                        "quilometragem", veiculo.getQuilometragem()).addOnCompleteListener(task -> {
                    this.mResultado.postValue(true);
                 }).addOnFailureListener(e -> {
                    this.mResultado.postValue(false);
