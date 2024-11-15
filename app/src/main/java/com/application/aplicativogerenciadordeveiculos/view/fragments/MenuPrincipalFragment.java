@@ -3,6 +3,8 @@ package com.application.aplicativogerenciadordeveiculos.view.fragments;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -63,8 +65,14 @@ public class MenuPrincipalFragment extends Fragment {
         });
     }
 
-    Observer<ArrayList<Veiculo>> observaListaVeiculos = veiculos -> {
-        atualizaListagem(veiculos);
+    Observer<ArrayList<Veiculo>> observaListaVeiculos = new Observer<ArrayList<Veiculo>>() {
+        @Override
+        public void onChanged(ArrayList<Veiculo> listaVeiculos) {
+            if (!listaVeiculos.isEmpty()) {
+                atualizaListagem(listaVeiculos);
+            }
+
+        }
     };
 
     @Override
@@ -73,6 +81,38 @@ public class MenuPrincipalFragment extends Fragment {
         binding = null;
         mViewModel.limpaEstado();
     }
+
+    VeiculoAdapter.VeiculoOnClickListener trataCliqueItem = (view, position, veiculo) -> {
+        informacoesViewModel.setVeiculoSelecionado(veiculo);
+        Navigation.findNavController(view).navigate(R.id.acao_menuPrincipalFragment_para_menuVeiculoFragment);
+    };
+
+    VeiculoAdapter.VeiculoOnClickListener trataCliqueExcluirItem = (view, position, veiculo) -> {
+        AlertDialog.Builder msgConfirmacao = new AlertDialog.Builder(getContext());
+        msgConfirmacao.setTitle("Excluir");
+        msgConfirmacao.setIcon(R.drawable.ic_excluir);
+        msgConfirmacao.setMessage("Você deseja realmente excluir o veículo " + veiculo.getMarca() + " " + veiculo.getModelo() + "?" +
+                "\nEssa ação não poderá ser revertida!");
+        msgConfirmacao.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                informacoesViewModel.removerVeiculoDaLista(position);
+                mViewModel.excluirVeiculo(veiculo);
+            }
+        });
+        msgConfirmacao.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(getContext(), "Exclusão Cancelada!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        msgConfirmacao.show();
+    };
+
+    VeiculoAdapter.VeiculoOnClickListener trataCliqueEditarItem = (view, position, veiculo) -> {
+        informacoesViewModel.setVeiculoSelecionado(veiculo);
+        Navigation.findNavController(view).navigate(R.id.acao_menuPrincipalFragment_para_cadastroVeiculoFragment);
+    };
 
     @Override
     public void onResume() {
@@ -108,7 +148,9 @@ public class MenuPrincipalFragment extends Fragment {
                             placa = document.getString("placa");
                             tipo = document.getLong("tipo").intValue();
                             emailDono = document.getString("email");
-                            Veiculo veiculo = new Veiculo(marca, modelo, ano, placa, tipo, informacoesViewModel.getmUsuarioLogado().getValue());
+                            Usuario usuario = informacoesViewModel.getmUsuarioLogado().getValue();
+                            usuario.setEmail(emailDono);
+                            Veiculo veiculo = new Veiculo(marca, modelo, ano, placa, tipo, usuario);
                             informacoesViewModel.adicionarVeiculosNaLista(veiculo);
                         }
                     }else{
@@ -120,7 +162,7 @@ public class MenuPrincipalFragment extends Fragment {
 
     public void atualizaListagem(ArrayList<Veiculo> listaVeiculos) {
         if (listaVeiculos != null) {
-            VeiculoAdapter veiculoAdapter = new VeiculoAdapter(listaVeiculos);
+            VeiculoAdapter veiculoAdapter = new VeiculoAdapter(listaVeiculos, trataCliqueItem, trataCliqueExcluirItem, trataCliqueEditarItem);
             binding.rvVisualizaVeiculos.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.rvVisualizaVeiculos.setItemAnimator(new DefaultItemAnimator());
             binding.rvVisualizaVeiculos.setAdapter(veiculoAdapter);

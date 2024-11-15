@@ -1,4 +1,5 @@
 package com.application.aplicativogerenciadordeveiculos.view.adapter;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +16,29 @@ import java.util.List;
 
 public class VeiculoAdapter extends RecyclerView.Adapter<VeiculoAdapter.MyViewHolder> {
     private List<Veiculo> listaVeiculos;
+    private VeiculoOnClickListener veiculoOnClickListener;
+    private VeiculoOnClickListener veiculoOnDeleteListener;
+    private VeiculoOnClickListener veiculoOnEditListener;
 
-    private VeiculoAdapter.VeiculoOnClickListener VeiculoOnClickListener;
-
-    public VeiculoAdapter(List<Veiculo> listaVeiculos/*, VeiculoAdapter.VeiculoOnClickListener VeiculoOnClickListener*/) {
+    public VeiculoAdapter(List<Veiculo> listaVeiculos,
+                          VeiculoOnClickListener veiculoOnClickListener,
+                          VeiculoOnClickListener veiculoOnDeleteListener,
+                          VeiculoOnClickListener veiculoOnEditListener) {
         this.listaVeiculos = listaVeiculos;
-        //this.VeiculoOnClickListener = VeiculoOnClickListener;
+        this.veiculoOnClickListener = veiculoOnClickListener;
+        this.veiculoOnDeleteListener = veiculoOnDeleteListener;
+        this.veiculoOnEditListener = veiculoOnEditListener;
     }
 
     @NonNull
     @Override
-    public VeiculoAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VeiculoAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemListRowVeiculoBinding itemListRowEventoBinding = ItemListRowVeiculoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new VeiculoAdapter.MyViewHolder(itemListRowEventoBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(final VeiculoAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Veiculo veiculo = listaVeiculos.get(position);
         holder.itemListRowBinding.tvItemPlaca.setText(veiculo.getPlaca().toUpperCase());
         holder.itemListRowBinding.tvItemMarcaModelo.setText(veiculo.getMarca() + " " + veiculo.getModelo());
@@ -49,11 +56,26 @@ public class VeiculoAdapter extends RecyclerView.Adapter<VeiculoAdapter.MyViewHo
             holder.itemListRowBinding.ivTipoVeiculo.setImageResource(R.drawable.ic_roda);
         }
 
-        /*if (VeiculoOnClickListener != null) {
-            holder.itemListRowBinding.getRoot().setOnClickListener(view -> {
-                VeiculoOnClickListener.onClickVeiculo(holder.itemView, position, veiculo);
+        if (veiculoOnClickListener != null) {
+            holder.itemListRowBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    veiculoOnClickListener.onClickVeiculo(holder.itemView, position, veiculo);
+                }
             });
-        }*/
+        }
+
+        if (veiculoOnDeleteListener != null) {
+            holder.itemListRowBinding.ivVeiculoExcluir.setOnClickListener(onClickListener -> {
+                veiculoOnDeleteListener.onClickVeiculo(holder.itemView, position, veiculo);
+            });
+        }
+
+        if (veiculoOnEditListener != null) {
+            holder.itemListRowBinding.ivVeiculoEditar.setOnClickListener(onclickListener -> {
+                veiculoOnEditListener.onClickVeiculo(holder.itemView, position, veiculo);
+            });
+        }
     }
 
     @Override

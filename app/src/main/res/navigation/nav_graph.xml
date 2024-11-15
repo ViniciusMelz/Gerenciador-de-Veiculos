@@ -32,6 +32,9 @@
         <action
             android:id="@+id/acao_menuPrincipalFragment_para_cadastroVeiculoFragment"
             app:destination="@id/cadastroVeiculoFragment" />
+        <action
+            android:id="@+id/acao_menuPrincipalFragment_para_menuVeiculoFragment"
+            app:destination="@id/menuVeiculoFragment" />
     </fragment>
     <action
         android:id="@+id/acao_global_loginFragment"
@@ -56,4 +59,9 @@
             android:id="@+id/acao_cadastroVeiculoFragment_para_menuPrincipalFragment"
             app:destination="@id/menuPrincipalFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/menuVeiculoFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.MenuVeiculoFragment"
+        android:label="fragment_menu_veiculo"
+        tools:layout="@layout/fragment_menu_veiculo" />
 </navigation>

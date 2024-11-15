@@ -13,9 +13,12 @@ public class InformacoesViewModel extends ViewModel {
     private MutableLiveData<Usuario> mUsuarioLogado;
     private MutableLiveData<ArrayList<Veiculo>> mlistaVeiculos;
 
+    private MutableLiveData<Veiculo> mVeiculoSelecionado;
+
     public InformacoesViewModel() {
         this.mUsuarioLogado = new MutableLiveData<>();
         this.mlistaVeiculos = new MutableLiveData<>();
+        this.mVeiculoSelecionado = new MutableLiveData<>();
     }
 
     public MutableLiveData<Usuario> getmUsuarioLogado() {
@@ -30,6 +33,10 @@ public class InformacoesViewModel extends ViewModel {
         return this.mUsuarioLogado.getValue();
     }
 
+    public void zerarListaVeiculos(){
+        this.mlistaVeiculos = new MutableLiveData<>();
+    }
+
     public MutableLiveData<ArrayList<Veiculo>> getListaVeiculos() {
         return mlistaVeiculos;
     }
@@ -38,9 +45,18 @@ public class InformacoesViewModel extends ViewModel {
         this.mlistaVeiculos = listaVeiculos;
     }
 
+    public MutableLiveData<Veiculo> getmVeiculoSelecionado() {
+        return mVeiculoSelecionado;
+    }
+
+    public void setVeiculoSelecionado(Veiculo veiculoSelecionado) {
+        this.mVeiculoSelecionado.postValue(veiculoSelecionado);
+    }
+
     public void limpaEstado(){
         mUsuarioLogado = new MutableLiveData<>();
         this.mlistaVeiculos = new MutableLiveData<>();
+        this.mVeiculoSelecionado = new MutableLiveData<>();
     }
 
     public void adicionarVeiculosNaLista(Veiculo veiculo) {
@@ -67,4 +83,6 @@ public class InformacoesViewModel extends ViewModel {
             }
         }
     }
+
+
 }
