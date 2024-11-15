@@ -1,10 +1,15 @@
 package com.application.aplicativogerenciadordeveiculos.view.viewModel;
 
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +17,6 @@ import java.util.List;
 public class InformacoesViewModel extends ViewModel {
     private MutableLiveData<Usuario> mUsuarioLogado;
     private MutableLiveData<ArrayList<Veiculo>> mlistaVeiculos;
-
     private MutableLiveData<Veiculo> mVeiculoSelecionado;
 
     public InformacoesViewModel() {
@@ -59,6 +63,9 @@ public class InformacoesViewModel extends ViewModel {
         this.mVeiculoSelecionado = new MutableLiveData<>();
     }
 
+    public void setArrayListVeiculos(ArrayList<Veiculo> listaVeiculos){
+        mlistaVeiculos.postValue(listaVeiculos);
+    }
     public void adicionarVeiculosNaLista(Veiculo veiculo) {
         ArrayList<Veiculo> listaVeiculos = getListaVeiculos().getValue();
         if(veiculo != null){
@@ -84,5 +91,25 @@ public class InformacoesViewModel extends ViewModel {
         }
     }
 
+    public void zerarVeiculoSelecionado(){
+        this.mVeiculoSelecionado = new MutableLiveData<>();
+    }
 
+    public void buscarVeiculosFirebase(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Veículos").whereEqualTo("email", this.getmUsuarioLogado().getValue().getEmail())
+                .addSnapshotListener((querySnapshot, e) -> {
+                    if (e != null) {
+                        return;
+                    }
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        ArrayList<Veiculo> listaVeiculos = new ArrayList<>();
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            Veiculo veiculo = doc.toObject(Veiculo.class);
+                            listaVeiculos.add(veiculo);
+                        }
+                        this.setArrayListVeiculos(listaVeiculos);
+                    }
+                });
+    }
 }

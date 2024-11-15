@@ -36,6 +36,10 @@ public class CadastroVeiculoFragment extends Fragment {
     InformacoesViewModel informacoesViewModel;
     private CadastroVeiculoViewModel mViewModel;
 
+    private String labelTela = "CADASTRO DE VEÍCULO";
+    private String labelHeader = "Novo Veículo";
+    private String labelBotao = "Cadastrar Veículo";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -47,14 +51,18 @@ public class CadastroVeiculoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(CadastroVeiculoViewModel.class);
         informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
+        if(informacoesViewModel.getmVeiculoSelecionado().getValue() != null){
+            mViewModel.setmVeiculoEdicao(informacoesViewModel.getmVeiculoSelecionado().getValue());
+            informacoesViewModel.zerarVeiculoSelecionado();
+            labelTela = "EDIÇÃO DE VEÍCULO";
+            labelHeader = "Editar Veículo";
+            labelBotao = "Editar Veículo";
+            carregaVeiculoEdicao();
+        }else{
+            mViewModel.setmVeiculoEdicao(null);
+        }
 
         mViewModel.getResultado().observe(getViewLifecycleOwner(), observaCadastroVeiculo);
-
-        Bundle args = getArguments();
-        if (args != null) {
-            mViewModel.setmVeiculoEdicao((Veiculo) args.getSerializable("veiculo"));
-            carregaVeiculoEdicao();
-        } else mViewModel.setmVeiculoEdicao(null);
 
         binding.bCadastrarVeiculo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +114,7 @@ public class CadastroVeiculoFragment extends Fragment {
                     veiculo.setTipo(tipo);
 
                     mViewModel.atualizarVeiculo(veiculo);
-
+                    Toast.makeText(getContext(), "Veículo Atualizado com Sucesso!", Toast.LENGTH_LONG).show();
                     Navigation.findNavController(view).popBackStack();
                 }
             }
@@ -146,6 +154,7 @@ public class CadastroVeiculoFragment extends Fragment {
         binding.etCadastroAno.setText(String.valueOf(mViewModel.getVeiculoEdicao().getValue().getAno()));
         binding.etCadastroPlaca.setText(mViewModel.getVeiculoEdicao().getValue().getPlaca());
         binding.spCadastroTipo.setSelection(mViewModel.getVeiculoEdicao().getValue().getTipo());
+
     }
 
     @Override
@@ -160,8 +169,11 @@ public class CadastroVeiculoFragment extends Fragment {
         super.onResume();
         if (requireActivity() instanceof MainActivity) {
             ((MainActivity) requireActivity()).escondeBottomNavigation();
-            ((MainActivity) requireActivity()).getSupportActionBar().setTitle("Novo Veículo");
+            ((MainActivity) requireActivity()).getSupportActionBar().setTitle(labelHeader);
             ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            binding.tvLabelTela.setText(labelTela);
+            binding.bCadastrarVeiculo.setText(labelBotao);
+
         }
     }
 

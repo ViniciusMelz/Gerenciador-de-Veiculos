@@ -33,8 +33,8 @@ public class VeiculoAdapter extends RecyclerView.Adapter<VeiculoAdapter.MyViewHo
     @NonNull
     @Override
     public VeiculoAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemListRowVeiculoBinding itemListRowEventoBinding = ItemListRowVeiculoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new VeiculoAdapter.MyViewHolder(itemListRowEventoBinding);
+        ItemListRowVeiculoBinding itemListRowVeiculoBinding = ItemListRowVeiculoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new VeiculoAdapter.MyViewHolder(itemListRowVeiculoBinding);
     }
 
     @Override

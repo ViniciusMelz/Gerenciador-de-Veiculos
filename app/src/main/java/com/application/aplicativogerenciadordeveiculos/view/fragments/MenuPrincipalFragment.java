@@ -57,6 +57,11 @@ public class MenuPrincipalFragment extends Fragment {
         informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
         informacoesViewModel.getListaVeiculos().observe(getViewLifecycleOwner(), observaListaVeiculos);
 
+        informacoesViewModel.buscarVeiculosFirebase();
+        if(informacoesViewModel.getListaVeiculos().getValue() != null){
+            mViewModel.setmListaVeiculos(informacoesViewModel.getListaVeiculos());
+        }
+
         binding.bAdicionarVeiculo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +103,7 @@ public class MenuPrincipalFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 informacoesViewModel.removerVeiculoDaLista(position);
                 mViewModel.excluirVeiculo(veiculo);
+                Toast.makeText(getContext(), "Exclusão Realizada com Sucesso!", Toast.LENGTH_LONG).show();
             }
         });
         msgConfirmacao.setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -130,34 +136,6 @@ public class MenuPrincipalFragment extends Fragment {
         if (requireActivity() instanceof MainActivity) {
             ((MainActivity) requireActivity()).mostraBottomNavigation();
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Veículos").whereEqualTo("email", informacoesViewModel.getmUsuarioLogado().getValue().getEmail())
-                .get().addOnCompleteListener(task -> {
-                    if(!task.getResult().isEmpty()){
-                        String emailDono, marca, modelo, placa;
-                        int tipo, ano;
-                        for(QueryDocumentSnapshot document : task.getResult()){
-                            marca = document.getString("marca");
-                            modelo = document.getString("modelo");
-                            ano = document.getLong("ano").intValue();
-                            placa = document.getString("placa");
-                            tipo = document.getLong("tipo").intValue();
-                            emailDono = document.getString("email");
-                            Usuario usuario = informacoesViewModel.getmUsuarioLogado().getValue();
-                            usuario.setEmail(emailDono);
-                            Veiculo veiculo = new Veiculo(marca, modelo, ano, placa, tipo, usuario);
-                            informacoesViewModel.adicionarVeiculosNaLista(veiculo);
-                        }
-                    }else{
-                        Toast.makeText(getContext(), "Nenhum veículo encontrado, cadastre um veículo!", Toast.LENGTH_LONG).show();
-                    }
-                });
-        mViewModel.setmListaVeiculos(informacoesViewModel.getListaVeiculos());
     }
 
     public void atualizaListagem(ArrayList<Veiculo> listaVeiculos) {

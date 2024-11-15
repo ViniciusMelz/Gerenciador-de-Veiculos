@@ -19,6 +19,9 @@ public class Veiculo implements Serializable {
         this.usuarioDono = usuarioDono;
     }
 
+    public Veiculo() {
+    }
+
     public String getMarca() {
         return marca;
     }
