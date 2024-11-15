@@ -3,12 +3,24 @@ package com.application.aplicativogerenciadordeveiculos.model;
 import java.io.Serializable;
 
 public class Veiculo implements Serializable {
+
+    private String id;
     private String marca;
     private String modelo;
     private int ano;
     private String placa;
     private int tipo;
     private Usuario usuarioDono;
+
+    public Veiculo(String id, String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono) {
+        this.id = id;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.ano = ano;
+        this.placa = placa;
+        this.tipo = tipo;
+        this.usuarioDono = usuarioDono;
+    }
 
     public Veiculo(String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono) {
         this.marca = marca;
@@ -20,6 +32,14 @@ public class Veiculo implements Serializable {
     }
 
     public Veiculo() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getMarca() {

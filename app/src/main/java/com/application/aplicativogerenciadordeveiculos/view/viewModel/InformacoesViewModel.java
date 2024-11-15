@@ -106,6 +106,8 @@ public class InformacoesViewModel extends ViewModel {
                         ArrayList<Veiculo> listaVeiculos = new ArrayList<>();
                         for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                             Veiculo veiculo = doc.toObject(Veiculo.class);
+                            veiculo.setUsuarioDono(new Usuario(doc.getString("email")));
+                            veiculo.setId(doc.getId());
                             listaVeiculos.add(veiculo);
                         }
                         this.setArrayListVeiculos(listaVeiculos);

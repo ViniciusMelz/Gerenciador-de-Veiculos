@@ -76,5 +76,18 @@ public class CadastroVeiculoViewModel extends ViewModel {
     }
 
     public void atualizarVeiculo(Veiculo veiculo){
+        //metodo para atualizar veiculo no firebase
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Veículos").document(veiculo.getId()).
+                update("marca", veiculo.getMarca(),
+                        "modelo", veiculo.getModelo(),
+                        "ano", veiculo.getAno(),
+                        "placa", veiculo.getPlaca(),
+                        "tipo", veiculo.getTipo(),
+                        "email", veiculo.getUsuarioDono().getEmail()).addOnCompleteListener(task -> {
+                   this.mResultado.postValue(true);
+                }).addOnFailureListener(e -> {
+                   this.mResultado.postValue(false);
+                });
     }
 }

@@ -56,6 +56,7 @@ public class MenuPrincipalFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(MenuPrincipalViewModel.class);
         informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
         informacoesViewModel.getListaVeiculos().observe(getViewLifecycleOwner(), observaListaVeiculos);
+        mViewModel.getmResultado().observe(getViewLifecycleOwner(), observaExclusaoVeiculos);
 
         informacoesViewModel.buscarVeiculosFirebase();
         if(informacoesViewModel.getListaVeiculos().getValue() != null){
@@ -77,6 +78,14 @@ public class MenuPrincipalFragment extends Fragment {
                 atualizaListagem(listaVeiculos);
             }
 
+        }
+    };
+
+    Observer<Boolean> observaExclusaoVeiculos = aBoolean -> {
+        if(aBoolean){
+            Toast.makeText(getContext(), "Exclusão Realizada com Sucesso!", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getContext(), "ERRO: Não foi possível excluir o Veículo, Tente Novamente!", Toast.LENGTH_LONG).show();
         }
     };
 
@@ -103,7 +112,6 @@ public class MenuPrincipalFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 informacoesViewModel.removerVeiculoDaLista(position);
                 mViewModel.excluirVeiculo(veiculo);
-                Toast.makeText(getContext(), "Exclusão Realizada com Sucesso!", Toast.LENGTH_LONG).show();
             }
         });
         msgConfirmacao.setNegativeButton("Não", new DialogInterface.OnClickListener() {

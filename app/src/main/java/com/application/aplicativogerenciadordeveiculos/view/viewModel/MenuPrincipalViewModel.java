@@ -35,6 +35,12 @@ public class MenuPrincipalViewModel extends ViewModel {
     }
 
     public void excluirVeiculo(Veiculo veiculo){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Veículos").document(veiculo.getId()).delete().addOnCompleteListener(task -> {
+           mResultado.postValue(true);
+        }).addOnFailureListener(e -> {
+            mResultado.postValue(false);
+        });
     }
 
     public void setmListaVeiculos(MutableLiveData<ArrayList<Veiculo>> mlistaVeiculos) {
