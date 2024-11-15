@@ -108,7 +108,7 @@ public class MenuPrincipalFragment extends Fragment {
                             placa = document.getString("placa");
                             tipo = document.getLong("tipo").intValue();
                             emailDono = document.getString("email");
-                            Veiculo veiculo = new Veiculo(marca, modelo, ano, placa, tipo, mViewModel.getmUsuarioLogado().getValue());
+                            Veiculo veiculo = new Veiculo(marca, modelo, ano, placa, tipo, informacoesViewModel.getmUsuarioLogado().getValue());
                             informacoesViewModel.adicionarVeiculosNaLista(veiculo);
                         }
                     }else{
