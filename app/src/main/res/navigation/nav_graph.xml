@@ -68,7 +68,11 @@
         android:id="@+id/visualizaRelatorioFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.visualizaRelatorioFragment"
         android:label="fragment_visualiza_relatorio"
-        tools:layout="@layout/fragment_visualiza_relatorio" />
+        tools:layout="@layout/fragment_visualiza_relatorio" >
+        <action
+            android:id="@+id/acao_visualizaRelatorioFragment_para_menuPrincipalFragment"
+            app:destination="@id/menuPrincipalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/visualizaSaidasFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.visualizaSaidasFragment"

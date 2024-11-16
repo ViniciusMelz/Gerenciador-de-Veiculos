@@ -1,13 +1,178 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.visualizaRelatorioFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragments.visualizaRelatorioFragment"
+    android:background="@color/light_gray">
 
-    <TextView
+    <WebView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="350dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/wvGrafico"
+        android:layout_margin="10dp"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/wvGrafico"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        android:id="@+id/divInternaSaidas"
+        android:background="@drawable/border_square"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="20dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLabelValorSaidas"
+            android:text="Valor Saídas: "
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvItemValorSaidas"
+            android:text="R$XX,XX"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvLabelValorSaidas"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/wvGrafico"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:id="@+id/divInternaEntradas"
+        android:background="@drawable/border_square"
+        android:layout_marginEnd="10dp"
+        android:paddingHorizontal="22dp"
+        android:paddingVertical="20dp"
+        android:layout_marginVertical="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLabelValorEntradas"
+            android:text="Valor Entradas: "
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvItemValorEntradas"
+            android:text="R$XX,XX"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divInternaSaidas"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        android:id="@+id/divInternaMediaCombustivel"
+        android:background="@drawable/border_square"
+        android:paddingHorizontal="20.5dp"
+        android:paddingVertical="20dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLabelMediaCombustivel"
+            android:text="Média KM/Litro:"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvItemMediaCombustivel"
+            android:text="XX,XX KM/L"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvLabelValorSaidas"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divInternaEntradas"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:id="@+id/divInternaQuilometragem"
+        android:background="@drawable/border_square"
+        android:layout_marginEnd="10dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
+        android:layout_marginVertical="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLabelQuilometragem"
+            android:text="Quilometragem:"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvItemQuilometragem"
+            android:text="XXXXXX KM"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            />
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bVoltar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:text="Voltar"
+        android:backgroundTint="@color/black"
+        android:textSize="50px"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="10dp"
+        android:height="50dp"
+        android:layout_marginBottom="95dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
