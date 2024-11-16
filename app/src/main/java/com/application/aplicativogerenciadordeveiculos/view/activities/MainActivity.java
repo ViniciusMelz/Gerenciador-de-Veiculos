@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(R.id.visualizaRelatorioFragment, R.id.visualizaEntradasFragment, R.id.visualizaSaidasFragment).build();
+        appBarConfiguration = new AppBarConfiguration.Builder(R.id.visualizaRelatorioFragment,  R.id.visualizaSaidasFragment, R.id.visualizaEntradasFragment).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
     }

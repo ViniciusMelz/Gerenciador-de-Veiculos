@@ -88,6 +88,7 @@ public class CadastroVeiculoViewModel extends ViewModel {
                         "email", veiculo.getUsuarioDono().getEmail(),
                         "quilometragem", veiculo.getQuilometragem()).addOnCompleteListener(task -> {
                    this.mResultado.postValue(true);
+                   this.mVeiculoEdicao.postValue(null);
                 }).addOnFailureListener(e -> {
                    this.mResultado.postValue(false);
                 });

@@ -98,7 +98,7 @@ public class MenuPrincipalFragment extends Fragment {
 
     VeiculoAdapter.VeiculoOnClickListener trataCliqueItem = (view, position, veiculo) -> {
         informacoesViewModel.setVeiculoSelecionado(veiculo);
-        Navigation.findNavController(view).navigate(R.id.acao_menuPrincipalFragment_para_menuVeiculoFragment);
+        Navigation.findNavController(view).navigate(R.id.acao_menuPrincipalFragment_para_visualizaRelatorioFragment3);
     };
 
     VeiculoAdapter.VeiculoOnClickListener trataCliqueExcluirItem = (view, position, veiculo) -> {
