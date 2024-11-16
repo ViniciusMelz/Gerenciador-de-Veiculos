@@ -101,7 +101,8 @@ public class visualizaRelatorioFragment extends Fragment {
                 "                       'width':430,\n" +
                 "                       'height':350," +
                 "                       colors:['green','red'],\n" +
-                "                       pieHole: 0.5};\n" +
+                "                       pieHole: 0.5," +
+                "                       backgroundColor: '#D3D3D3'};\n" +
                 "\n" +
                 "        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));\n" +
                 "        chart.draw(data, options);\n" +
@@ -114,8 +115,8 @@ public class visualizaRelatorioFragment extends Fragment {
                 "    </script>\n" +
                 "  </head>\n" +
                 "\n" +
-                "  <body style='overflow: hidden;'>\n" +
-                "    <div id=\"chart_div\" style='overflow: hidden; background-color: #D3D3D3'></div>\n" +
+                "  <body style='overflow: hidden; background-color: #D3D3D3;'>\n" +
+                "    <div id=\"chart_div\" style='overflow: hidden; background-color: #D3D3D3;'></div>\n" +
                 "  </body>\n" +
                 "</html>";
 
