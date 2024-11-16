@@ -77,4 +77,49 @@
             Outro
         </item>
     </string-array>
+
+    <string-array name="tipoSaidas" >
+        <item>
+            -- Selecione um Tipo de Saída --
+        </item>
+        <item>
+            Abastecimento
+        </item>
+        <item>
+            Manutenção
+        </item>
+        <item>
+            Impostos
+        </item>
+        <item>
+            Seguro
+        </item>
+        <item>
+            Aluguel
+        </item>
+        <item>
+            Outro
+        </item>
+    </string-array>
+
+    <string-array name="tipoEntradas" >
+        <item>
+            -- Selecione um Tipo de Entrada --
+        </item>
+        <item>
+            Motoboy
+        </item>
+        <item>
+            Motorista de Aplicativo
+        </item>
+        <item>
+            Frete
+        </item>
+        <item>
+            Aluguel do Veículo
+        </item>
+        <item>
+            Outro
+        </item>
+    </string-array>
 </resources>
