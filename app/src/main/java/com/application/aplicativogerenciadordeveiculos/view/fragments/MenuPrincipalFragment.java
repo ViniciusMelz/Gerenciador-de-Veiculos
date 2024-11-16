@@ -57,6 +57,7 @@ public class MenuPrincipalFragment extends Fragment {
         informacoesViewModel = new ViewModelProvider(getActivity()).get(InformacoesViewModel.class);
         informacoesViewModel.getListaVeiculos().observe(getViewLifecycleOwner(), observaListaVeiculos);
         mViewModel.getmResultado().observe(getViewLifecycleOwner(), observaExclusaoVeiculos);
+        informacoesViewModel.setVeiculoSelecionado(null);
 
         informacoesViewModel.buscarVeiculosFirebase();
         if(informacoesViewModel.getListaVeiculos().getValue() != null){

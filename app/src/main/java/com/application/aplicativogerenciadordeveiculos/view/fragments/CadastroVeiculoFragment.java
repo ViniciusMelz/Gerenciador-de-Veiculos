@@ -106,7 +106,7 @@ public class CadastroVeiculoFragment extends Fragment {
 
                 Veiculo veiculo = null;
                 if (mViewModel.getVeiculoEdicao().getValue() == null) {
-                    veiculo = new Veiculo(marca, modelo, ano, placa, tipo, informacoesViewModel.getmUsuarioLogado().getValue());
+                    veiculo = new Veiculo(marca, modelo, ano, placa, tipo, informacoesViewModel.getmUsuarioLogado().getValue(), quilometragem);
                     mViewModel.inserirVeiculo(veiculo);
                     informacoesViewModel.adicionarVeiculosNaLista(veiculo);
                     limpaCampos();

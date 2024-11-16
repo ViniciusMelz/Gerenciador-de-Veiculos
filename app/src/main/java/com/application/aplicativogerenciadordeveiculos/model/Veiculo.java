@@ -13,8 +13,10 @@ public class Veiculo implements Serializable {
     private Usuario usuarioDono;
     private int quilometragem;
     private float mediaCombustivel;
+    private float valorTotalSaidas;
+    private float valorTotalEntradas;
 
-    public Veiculo(String id, String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono, int quilometragem) {
+    public Veiculo(String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono, int quilometragem) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -23,6 +25,20 @@ public class Veiculo implements Serializable {
         this.tipo = tipo;
         this.usuarioDono = usuarioDono;
         this.quilometragem = quilometragem;
+    }
+
+    public Veiculo(String id, String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono, int quilometragem, float mediaCombustivel, float valorTotalSaidas, float valorTotalEntradas) {
+        this.id = id;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.ano = ano;
+        this.placa = placa;
+        this.tipo = tipo;
+        this.usuarioDono = usuarioDono;
+        this.quilometragem = quilometragem;
+        this.mediaCombustivel = mediaCombustivel;
+        this.valorTotalSaidas = valorTotalSaidas;
+        this.valorTotalEntradas = valorTotalEntradas;
     }
 
     public Veiculo(String marca, String modelo, int ano, String placa, int tipo, Usuario usuarioDono) {
@@ -123,5 +139,21 @@ public class Veiculo implements Serializable {
 
     public void setMediaCombustivel(float mediaCombustivel) {
         this.mediaCombustivel = mediaCombustivel;
+    }
+
+    public float getValorTotalSaidas() {
+        return valorTotalSaidas;
+    }
+
+    public void setValorTotalSaidas(float valorTotalSaidas) {
+        this.valorTotalSaidas = valorTotalSaidas;
+    }
+
+    public float getValorTotalEntradas() {
+        return valorTotalEntradas;
+    }
+
+    public void setValorTotalEntradas(float valorTotalEntradas) {
+        this.valorTotalEntradas = valorTotalEntradas;
     }
 }

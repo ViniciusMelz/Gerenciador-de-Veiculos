@@ -61,6 +61,9 @@ public class CadastroVeiculoViewModel extends ViewModel {
         veiculoMap.put("tipo", veiculo.getTipo());
         veiculoMap.put("email", veiculo.getUsuarioDono().getEmail());
         veiculoMap.put("quilometragem", veiculo.getQuilometragem());
+        veiculoMap.put("mediaCombustivel", veiculo.getMediaCombustivel());
+        veiculoMap.put("valorTotalSaidas", veiculo.getValorTotalSaidas());
+        veiculoMap.put("valorTotalEntradas", veiculo.getValorTotalEntradas());
 
         db.collection("Veículos").document().set(veiculoMap).addOnCompleteListener(taskSalvamento -> {
             if(taskSalvamento.isSuccessful()){
