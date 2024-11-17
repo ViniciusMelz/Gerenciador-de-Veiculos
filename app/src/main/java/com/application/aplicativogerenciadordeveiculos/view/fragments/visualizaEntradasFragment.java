@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.application.aplicativogerenciadordeveiculos.R;
@@ -39,6 +42,7 @@ public class visualizaEntradasFragment extends Fragment {
     private VisualizaEntradasViewModel mViewModel;
     InformacoesViewModel informacoesViewModel;
     FragmentVisualizaEntradasBinding binding;
+    float valorTotalMotoboy = 0, valorTotalMotorista = 0, valorTotalFrete = 0, valorTotalAluguelDoVeiculo = 0, valorTotalOutros = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -66,6 +70,12 @@ public class visualizaEntradasFragment extends Fragment {
         if(informacoesViewModel.getMlistaEntradas().getValue() != null){
             mViewModel.setMlistaEntradas(informacoesViewModel.getMlistaEntradas());
         }
+
+        WebSettings webSettings = binding.wvGrafico.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        binding.wvGrafico.setWebViewClient(new WebViewClient());
+        carregaGoogleChart(binding.wvGrafico);
 
         binding.bCadastrarEntrada.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +158,75 @@ public class visualizaEntradasFragment extends Fragment {
             binding.rvVisualizaEntradas.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.rvVisualizaEntradas.setItemAnimator(new DefaultItemAnimator());
             binding.rvVisualizaEntradas.setAdapter(entradaAdapter);
+            WebSettings webSettings = binding.wvGrafico.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+
+            binding.wvGrafico.setWebViewClient(new WebViewClient());
+            carregaGoogleChart(binding.wvGrafico);
         }
+    }
+
+    private void carregaGoogleChart(WebView webView) {
+        if(informacoesViewModel.getMlistaEntradas().getValue() != null){
+            for (int i = 0; i < informacoesViewModel.getMlistaEntradas().getValue().size(); i++) {
+                if(informacoesViewModel.getMlistaEntradas().getValue().get(i).getTipo() == 1){
+                    valorTotalMotoboy += informacoesViewModel.getMlistaEntradas().getValue().get(i).getValor();
+                } else if(informacoesViewModel.getMlistaEntradas().getValue().get(i).getTipo() == 2){
+                    valorTotalMotorista += informacoesViewModel.getMlistaEntradas().getValue().get(i).getValor();
+                } else if(informacoesViewModel.getMlistaEntradas().getValue().get(i).getTipo() == 3){
+                    valorTotalFrete += informacoesViewModel.getMlistaEntradas().getValue().get(i).getValor();
+                } else if(informacoesViewModel.getMlistaEntradas().getValue().get(i).getTipo() == 4){
+                    valorTotalAluguelDoVeiculo += informacoesViewModel.getMlistaEntradas().getValue().get(i).getValor();
+                } else{
+                    valorTotalOutros += informacoesViewModel.getMlistaEntradas().getValue().get(i).getValor();
+                }
+            }
+        }
+        String dataJson = "[['Motoboy', " + valorTotalMotoboy + "]," +
+                " ['Motorista de Aplicativo', " + valorTotalMotorista + "]," +
+                " ['Frete', " + valorTotalFrete + "]," +
+                " ['Aluguel do Veículo', " + valorTotalAluguelDoVeiculo + "]," +
+                " ['Outras Entradas', " + valorTotalOutros + "]]";
+        String htmlData = "<html>\n" +
+                "  <head>\n" +
+                "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n" +
+                "    <script type=\"text/javascript\">\n" +
+                "\n" +
+                "      google.charts.load('current', {'packages':['corechart']});\n" +
+                "\n" +
+                "      google.charts.setOnLoadCallback(drawChart);\n" +
+                "\n" +
+                "      function drawChart() {\n" +
+                "\n" +
+                "        var data = new google.visualization.DataTable();\n" +
+                "        data.addColumn('string', 'Topping');\n" +
+                "        data.addColumn('number', 'Slices');\n" +
+                "        if("+ valorTotalMotoboy + " != 0.0 || " + valorTotalMotorista + " != 0.0 || " + valorTotalFrete + " != 0.0 || " + valorTotalAluguelDoVeiculo + " != 0.0 || " + valorTotalOutros + " != 0.0){" +
+                "        data.addRows(" + dataJson + ");\n" +
+                "\n" +
+                "        var options = {'title':'Comparação Tipos de Entradas',\n" +
+                "                       'width':430,\n" +
+                "                       'height':350," +
+                "                       colors:['green','blue','red','brown','orange'],\n" +
+                "                       pieHole: 0.5," +
+                "                       backgroundColor: '#D3D3D3'};\n" +
+                "\n" +
+                "        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));\n" +
+                "        chart.draw(data, options);\n" +
+                "        }else{" +
+                "           var chart = document.getElementById('chart_div');" +
+                "           chart.style = 'text-align: center; padding-top: 10px; font-weight: bold;';" +
+                "           chart.innerText = 'SEM ENTRADAS E SAÍDAS REGISTRADAS! CADASTRE ALGUMA ENTRADA OU SAÍDA PARA VISUALIZAR O GRÁFICO!'" +
+                "        }" +
+                "      }\n" +
+                "    </script>\n" +
+                "  </head>\n" +
+                "\n" +
+                "  <body style='overflow: hidden; background-color: #D3D3D3;'>\n" +
+                "    <div id=\"chart_div\" style='overflow: hidden; background-color: #D3D3D3;'></div>\n" +
+                "  </body>\n" +
+                "</html>";
+
+        webView.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
     }
 }

@@ -17,12 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.application.aplicativogerenciadordeveiculos.R;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentVisualizaEntradasBinding;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentVisualizaRelatorioBinding;
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentVisualizaSaidasBinding;
+import com.application.aplicativogerenciadordeveiculos.model.Entrada;
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
 import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
 import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
@@ -40,6 +44,7 @@ public class visualizaSaidasFragment extends Fragment {
     private VisualizaSaidasViewModel mViewModel;
     InformacoesViewModel informacoesViewModel;
     FragmentVisualizaSaidasBinding binding;
+    float valorTotalAbastecimentos = 0, valorTotalManutencoes = 0, valorTotalImpostos = 0, valorTotalSeguro = 0, valorTotalAluguel = 0, valorTotalOutros = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -67,6 +72,12 @@ public class visualizaSaidasFragment extends Fragment {
         if(informacoesViewModel.getMlistaSaidas().getValue() != null){
             mViewModel.setMlistaSaidas(informacoesViewModel.getMlistaSaidas());
         }
+
+        WebSettings webSettings = binding.wvGrafico.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        binding.wvGrafico.setWebViewClient(new WebViewClient());
+        carregaGoogleChart(binding.wvGrafico);
 
         binding.bCadastrarSaidas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +160,80 @@ public class visualizaSaidasFragment extends Fragment {
             binding.rvVisualizaSaidas.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.rvVisualizaSaidas.setItemAnimator(new DefaultItemAnimator());
             binding.rvVisualizaSaidas.setAdapter(saidaAdapter);
+            WebSettings webSettings = binding.wvGrafico.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+
+            binding.wvGrafico.setWebViewClient(new WebViewClient());
+            carregaGoogleChart(binding.wvGrafico);
         }
+    }
+
+    private void carregaGoogleChart(WebView webView) {
+        ArrayList<Saida> listaSaidas = informacoesViewModel.getMlistaSaidas().getValue();
+        if(listaSaidas != null){
+            for (int i = 0; i < listaSaidas.size(); i++) {
+                if(listaSaidas.get(i).getTipo() == 1){
+                    valorTotalAbastecimentos += listaSaidas.get(i).getValor();
+                } else if(listaSaidas.get(i).getTipo() == 2){
+                    valorTotalManutencoes += listaSaidas.get(i).getValor();
+                } else if(listaSaidas.get(i).getTipo() == 3){
+                    valorTotalImpostos += listaSaidas.get(i).getValor();
+                } else if(listaSaidas.get(i).getTipo() == 4){
+                    valorTotalSeguro += listaSaidas.get(i).getValor();
+                } else if(listaSaidas.get(i).getTipo() == 5){
+                    valorTotalAluguel += listaSaidas.get(i).getValor();
+                } else{
+                    valorTotalOutros += listaSaidas.get(i).getValor();
+                }
+            }
+        }
+        String dataJson = "[['Abastecimentos', " + valorTotalAbastecimentos + "]," +
+                " ['Manutenções', " + valorTotalManutencoes + "]," +
+                " ['Impostos', " + valorTotalImpostos + "]," +
+                " ['Seguro', " + valorTotalSeguro + "]," +
+                " ['Aluguel', " + valorTotalAluguel + "]," +
+                " ['Outras Entradas', " + valorTotalOutros + "]]";
+        String htmlData = "<html>\n" +
+                "  <head>\n" +
+                "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n" +
+                "    <script type=\"text/javascript\">\n" +
+                "\n" +
+                "      google.charts.load('current', {'packages':['corechart']});\n" +
+                "\n" +
+                "      google.charts.setOnLoadCallback(drawChart);\n" +
+                "\n" +
+                "      function drawChart() {\n" +
+                "\n" +
+                "        var data = new google.visualization.DataTable();\n" +
+                "        data.addColumn('string', 'Topping');\n" +
+                "        data.addColumn('number', 'Slices');\n" +
+                "        if("+ valorTotalAbastecimentos + " != 0.0 || " + valorTotalManutencoes + " != 0.0 || " + valorTotalImpostos + " != 0.0 || " + valorTotalSeguro + " != 0.0 || " + valorTotalAluguel + " != 0.0 || " + valorTotalOutros + " != 0.0){" +
+                "        data.addRows(" + dataJson + ");\n" +
+                "\n" +
+                "        var options = {'title':'Comparação Tipos de Saídas',\n" +
+                "                       'width':430,\n" +
+                "                       'height':350," +
+                "                       colors:['orange','brown','green','red','blue'],\n" +
+                "                       pieHole: 0.5," +
+                "                       backgroundColor: '#D3D3D3'};\n" +
+                "\n" +
+                "        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));\n" +
+                "        chart.draw(data, options);\n" +
+                "        }else{" +
+                "           var chart = document.getElementById('chart_div');" +
+                "           chart.style = 'text-align: center; padding-top: 10px; font-weight: bold;';" +
+                "           chart.innerText = 'SEM ENTRADAS E SAÍDAS REGISTRADAS! CADASTRE ALGUMA ENTRADA OU SAÍDA PARA VISUALIZAR O GRÁFICO!'" +
+                "        }" +
+                "      }\n" +
+                "    </script>\n" +
+                "  </head>\n" +
+                "\n" +
+                "  <body style='overflow: hidden; background-color: #D3D3D3;'>\n" +
+                "    <div id=\"chart_div\" style='overflow: hidden; background-color: #D3D3D3;'></div>\n" +
+                "  </body>\n" +
+                "</html>";
+
+        webView.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
     }
 
 }
