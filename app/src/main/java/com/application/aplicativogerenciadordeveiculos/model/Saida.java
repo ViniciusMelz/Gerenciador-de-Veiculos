@@ -2,37 +2,37 @@ package com.application.aplicativogerenciadordeveiculos.model;
 
 import java.util.Date;
 
-public class Saidas {
+public class Saida {
     private Veiculo veiculo;
     private int tipo;
     private float valor;
     private String descricao;
-    private int odometro;
+    private int quilometragem;
     private float litrosAbastecidos;
     private float mediaCombustivel;
     private Date data;
 
-    public Saidas(Veiculo veiculo, int tipo, float valor, String descricao, int odometro, Date data) {
+    public Saida(Veiculo veiculo, int tipo, float valor, String descricao, int quilometragem, Date data) {
         this.veiculo = veiculo;
         this.tipo = tipo;
         this.valor = valor;
         this.descricao = descricao;
-        this.odometro = odometro;
+        this.quilometragem = quilometragem;
         this.data = data;
     }
 
-    public Saidas(Veiculo veiculo, int tipo, float valor, String descricao, int odometro, float litrosAbastecidos, float mediaCombustivel, Date data) {
+    public Saida(Veiculo veiculo, int tipo, float valor, String descricao, int quilometragem, float litrosAbastecidos, float mediaCombustivel, Date data) {
         this.veiculo = veiculo;
         this.tipo = tipo;
         this.valor = valor;
         this.descricao = descricao;
-        this.odometro = odometro;
+        this.quilometragem = quilometragem;
         this.litrosAbastecidos = litrosAbastecidos;
         this.mediaCombustivel = mediaCombustivel;
         this.data = data;
     }
 
-    public Saidas() {
+    public Saida() {
     }
 
     public Veiculo getVeiculo() {
@@ -67,12 +67,12 @@ public class Saidas {
         this.descricao = descricao;
     }
 
-    public int getOdometro() {
-        return odometro;
+    public int getQuilometragem() {
+        return quilometragem;
     }
 
-    public void setOdometro(int odometro) {
-        this.odometro = odometro;
+    public void setQuilometragem(int quilometragem) {
+        this.quilometragem = quilometragem;
     }
 
     public float getLitrosAbastecidos() {
@@ -97,5 +97,22 @@ public class Saidas {
 
     public void setData(Date data) {
         this.data = data;
+    }
+    public String getTipoLiteral(){
+        String retorno = "Indefinido";
+        if(this.tipo == 1){
+            retorno = "Abastecimento";
+        } else if(this.tipo == 2){
+            retorno = "Manutenção";
+        } else if(this.tipo == 3){
+            retorno = "Impostos";
+        } else if(this.tipo == 4){
+            retorno = "Seguro";
+        } else if(this.tipo == 5){
+            retorno = "Aluguel";
+        } else{
+            retorno = "Outro";
+        }
+        return retorno;
     }
 }

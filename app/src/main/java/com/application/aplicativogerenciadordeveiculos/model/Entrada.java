@@ -2,24 +2,24 @@ package com.application.aplicativogerenciadordeveiculos.model;
 
 import java.util.Date;
 
-public class Entradas {
+public class Entrada {
     private Veiculo veiculo;
     private int tipo;
     private float valor;
     private String descricao;
-    private int odometro;
+    private int quilometragem;
     private Date data;
 
-    public Entradas(Veiculo veiculo, int tipo, float valor, String descricao, Date data, int odometro) {
+    public Entrada(Veiculo veiculo, int tipo, float valor, String descricao, Date data, int quilometragem) {
         this.veiculo = veiculo;
         this.tipo = tipo;
         this.valor = valor;
         this.descricao = descricao;
         this.data = data;
-        this.odometro = odometro;
+        this.quilometragem = quilometragem;
     }
 
-    public Entradas() {
+    public Entrada() {
     }
 
     public Veiculo getVeiculo() {
@@ -62,11 +62,27 @@ public class Entradas {
         this.data = data;
     }
 
-    public int getOdometro() {
-        return odometro;
+    public int getQuilometragem() {
+        return quilometragem;
     }
 
-    public void setOdometro(int odometro) {
-        this.odometro = odometro;
+    public void setQuilometragem(int quilometragem) {
+        this.quilometragem = quilometragem;
+    }
+
+    public String getTipoLiteral(){
+        String retorno = "Indefinido";
+        if(this.tipo == 1){
+            retorno = "Motoboy";
+        } else if(this.tipo == 2){
+            retorno = "Motorista de Aplicativo";
+        } else if(this.tipo == 3){
+            retorno = "Frete";
+        } else if(this.tipo == 4){
+            retorno = "Aluguel do Veículo";
+        } else{
+            retorno = "Outro";
+        }
+        return retorno;
     }
 }
