@@ -12,7 +12,12 @@ import com.application.aplicativogerenciadordeveiculos.R;
 import com.application.aplicativogerenciadordeveiculos.databinding.ItemListRowMovimentacoesBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Entrada;
 
+import java.text.DecimalFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
+import java.util.Locale;
 
 public class EntradaAdapter extends RecyclerView.Adapter<EntradaAdapter.MyViewHolder> {
     private List<Entrada> listaEntradas;
@@ -40,8 +45,19 @@ public class EntradaAdapter extends RecyclerView.Adapter<EntradaAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final EntradaAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Entrada entrada = listaEntradas.get(position);
-        holder.itemListRowBinding.tvItemData.setText(entrada.getData().toString());
-        holder.itemListRowBinding.tvItemValor.setText("R$" + String.valueOf(entrada.getValor()).replace(".", ","));
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        df.setMaximumFractionDigits(2);
+        String valorEntrada = df.format(entrada.getValor());
+
+        String data = entrada.getData().toString();
+        DateTimeFormatter inputFormatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("EEE MMM dd HH:mm:ss O yyyy").toFormatter(Locale.ENGLISH);
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(data, inputFormatter);
+        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String dataFormatada = zonedDateTime.format(formatadorData);
+
+        holder.itemListRowBinding.tvItemData.setText(dataFormatada);
+        holder.itemListRowBinding.tvItemValor.setText("R$" + valorEntrada.replace(".", ","));
         holder.itemListRowBinding.tvItemDescricao.setText(entrada.getDescricao());
         holder.itemListRowBinding.tvItemQuilometragem.setText(String.valueOf(entrada.getQuilometragem()) + " KM");
 

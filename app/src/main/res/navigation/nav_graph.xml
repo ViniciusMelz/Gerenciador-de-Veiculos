@@ -27,7 +27,7 @@
     <fragment
         android:id="@+id/menuPrincipalFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.MenuPrincipalFragment"
-        android:label="fragment_menu_principal"
+        android:label="Seus Veículos"
         tools:layout="@layout/fragment_menu_principal" >
         <action
             android:id="@+id/acao_menuPrincipalFragment_para_cadastroVeiculoFragment"
@@ -53,7 +53,7 @@
     <fragment
         android:id="@+id/cadastroVeiculoFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.CadastroVeiculoFragment"
-        android:label="fragment_cadastro_veiculo"
+        android:label="Novo Veículo"
         tools:layout="@layout/fragment_cadastro_veiculo" >
         <action
             android:id="@+id/acao_cadastroVeiculoFragment_para_menuPrincipalFragment"
@@ -62,12 +62,19 @@
     <fragment
         android:id="@+id/visualizaEntradasFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.visualizaEntradasFragment"
-        android:label="fragment_visualiza_entradas"
-        tools:layout="@layout/fragment_visualiza_entradas" />
+        android:label="Entradas"
+        tools:layout="@layout/fragment_visualiza_entradas" >
+        <action
+            android:id="@+id/acao_visualizaEntradasFragment_para_visualizaEntradaDetalhadaFragment"
+            app:destination="@id/visualizaEntradaDetalhadaFragment" />
+        <action
+            android:id="@+id/acao_visualizaEntradasFragment_para_cadastroEntradaFragment"
+            app:destination="@id/cadastroEntradaFragment" />
+    </fragment>
     <fragment
         android:id="@+id/visualizaRelatorioFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.visualizaRelatorioFragment"
-        android:label="fragment_visualiza_relatorio"
+        android:label="Relátorio"
         tools:layout="@layout/fragment_visualiza_relatorio" >
         <action
             android:id="@+id/acao_visualizaRelatorioFragment_para_menuPrincipalFragment"
@@ -76,6 +83,33 @@
     <fragment
         android:id="@+id/visualizaSaidasFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.visualizaSaidasFragment"
-        android:label="fragment_visualiza_saidas"
-        tools:layout="@layout/fragment_visualiza_saidas" />
+        android:label="Saídas"
+        tools:layout="@layout/fragment_visualiza_saidas" >
+        <action
+            android:id="@+id/acao_visualizaSaidasFragment_para_visualizaSaidaDetalhadaFragment"
+            app:destination="@id/visualizaSaidaDetalhadaFragment" />
+        <action
+            android:id="@+id/acao_visualizaSaidasFragment_para_cadastroSaidaFragment"
+            app:destination="@id/cadastroSaidaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/visualizaEntradaDetalhadaFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.VisualizaEntradaDetalhadaFragment"
+        android:label="Entrada Detalhada"
+        tools:layout="@layout/fragment_visualiza_entrada_detalhada" />
+    <fragment
+        android:id="@+id/visualizaSaidaDetalhadaFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.VisualizaSaidaDetalhadaFragment"
+        android:label="Saída Detalhada"
+        tools:layout="@layout/fragment_visualiza_saida_detalhada" />
+    <fragment
+        android:id="@+id/cadastroEntradaFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.CadastroEntradaFragment"
+        android:label="Nova Entrada"
+        tools:layout="@layout/fragment_cadastro_entrada" />
+    <fragment
+        android:id="@+id/cadastroSaidaFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.CadastroSaidaFragment"
+        android:label="Nova Saída"
+        tools:layout="@layout/fragment_cadastro_saida" />
 </navigation>

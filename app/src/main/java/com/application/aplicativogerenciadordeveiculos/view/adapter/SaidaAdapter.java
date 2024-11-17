@@ -12,7 +12,12 @@ import com.application.aplicativogerenciadordeveiculos.R;
 import com.application.aplicativogerenciadordeveiculos.databinding.ItemListRowMovimentacoesBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
 
+import java.text.DecimalFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
+import java.util.Locale;
 
 public class SaidaAdapter extends RecyclerView.Adapter<SaidaAdapter.MyViewHolder> {
     private List<Saida> listaSaidas;
@@ -40,8 +45,18 @@ public class SaidaAdapter extends RecyclerView.Adapter<SaidaAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final SaidaAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Saida saida = listaSaidas.get(position);
-        holder.itemListRowBinding.tvItemData.setText(saida.getData().toString());
-        holder.itemListRowBinding.tvItemValor.setText("R$" + String.valueOf(saida.getValor()).replace(".",","));
+        DecimalFormat df = new DecimalFormat("0.00");
+        df.setMaximumFractionDigits(2);
+        String valorSaida = df.format(saida.getValor());
+
+        String data = saida.getData().toString();
+        DateTimeFormatter inputFormatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("EEE MMM dd HH:mm:ss O yyyy").toFormatter(Locale.ENGLISH);
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(data, inputFormatter);
+        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String dataFormatada = zonedDateTime.format(formatadorData);
+
+        holder.itemListRowBinding.tvItemData.setText(dataFormatada);
+        holder.itemListRowBinding.tvItemValor.setText("R$" + valorSaida.replace(".", ","));
         holder.itemListRowBinding.tvItemDescricao.setText(saida.getDescricao());
         holder.itemListRowBinding.tvItemQuilometragem.setText(String.valueOf(saida.getQuilometragem()) + " KM");
 
