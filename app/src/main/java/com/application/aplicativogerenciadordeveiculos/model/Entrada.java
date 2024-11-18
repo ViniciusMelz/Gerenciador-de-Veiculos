@@ -3,6 +3,7 @@ package com.application.aplicativogerenciadordeveiculos.model;
 import java.util.Date;
 
 public class Entrada {
+    private String idEntrada;
     private Veiculo veiculo;
     private int tipo;
     private float valor;
@@ -84,5 +85,13 @@ public class Entrada {
             retorno = "Outro";
         }
         return retorno;
+    }
+
+    public String getIdEntrada() {
+        return idEntrada;
+    }
+
+    public void setIdEntrada(String idEntrada) {
+        this.idEntrada = idEntrada;
     }
 }

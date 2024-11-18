@@ -96,20 +96,36 @@
         android:id="@+id/visualizaEntradaDetalhadaFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.VisualizaEntradaDetalhadaFragment"
         android:label="Entrada Detalhada"
-        tools:layout="@layout/fragment_visualiza_entrada_detalhada" />
+        tools:layout="@layout/fragment_visualiza_entrada_detalhada" >
+        <action
+            android:id="@+id/acao_visualizaEntradaDetalhadaFragment_para_visualizaEntradasFragment"
+            app:destination="@id/visualizaEntradasFragment" />
+    </fragment>
     <fragment
         android:id="@+id/visualizaSaidaDetalhadaFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.VisualizaSaidaDetalhadaFragment"
         android:label="Saída Detalhada"
-        tools:layout="@layout/fragment_visualiza_saida_detalhada" />
+        tools:layout="@layout/fragment_visualiza_saida_detalhada" >
+        <action
+            android:id="@+id/acao_visualizaSaidaDetalhadaFragment_para_visualizaSaidasFragment"
+            app:destination="@id/visualizaSaidasFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cadastroEntradaFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.CadastroEntradaFragment"
         android:label="Nova Entrada"
-        tools:layout="@layout/fragment_cadastro_entrada" />
+        tools:layout="@layout/fragment_cadastro_entrada" >
+        <action
+            android:id="@+id/acao_cadastroEntradaFragment_para_visualizaEntradasFragment"
+            app:destination="@id/visualizaEntradasFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cadastroSaidaFragment"
         android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.CadastroSaidaFragment"
         android:label="Nova Saída"
-        tools:layout="@layout/fragment_cadastro_saida" />
+        tools:layout="@layout/fragment_cadastro_saida" >
+        <action
+            android:id="@+id/acao_cadastroSaidaFragment_para_visualizaSaidasFragment"
+            app:destination="@id/visualizaSaidasFragment" />
+    </fragment>
 </navigation>

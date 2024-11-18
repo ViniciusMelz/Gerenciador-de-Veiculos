@@ -231,6 +231,7 @@ public class InformacoesViewModel extends ViewModel {
                         for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                             Entrada entrada = doc.toObject(Entrada.class);
                             entrada.setVeiculo(this.getmVeiculoSelecionado().getValue());
+                            entrada.setIdEntrada(doc.getId());
                             listaEntradas.add(entrada);
                         }
                         this.setArrayListEntradas(listaEntradas);
@@ -250,6 +251,7 @@ public class InformacoesViewModel extends ViewModel {
                         for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                             Saida saida = doc.toObject(Saida.class);
                             saida.setVeiculo(this.getmVeiculoSelecionado().getValue());
+                            saida.setIdSaida(doc.getId());
                             listaSaidas.add(saida);
                         }
                         this.setArrayListSaidas(listaSaidas);
