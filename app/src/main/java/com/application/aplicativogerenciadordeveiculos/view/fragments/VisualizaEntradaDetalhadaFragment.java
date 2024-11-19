@@ -64,7 +64,11 @@ public class VisualizaEntradaDetalhadaFragment extends Fragment {
         binding.tvItemData.setText(dataFormatada);
         binding.tvItemQuilometragem.setText(entrada.getQuilometragem() + " KM");
         binding.tvItemValor.setText("R$" + valorSaida.replace(".",","));
-        binding.tvItemDescricao.setText(entrada.getDescricao());
+        if(entrada.getDescricao().equals("")){
+            binding.tvItemDescricao.setText("Não Informado!");
+        }else{
+            binding.tvItemDescricao.setText(entrada.getDescricao());
+        }
 
         binding.bVoltar.setOnClickListener(new View.OnClickListener() {
             @Override

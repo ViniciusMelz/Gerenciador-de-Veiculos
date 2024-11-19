@@ -5,13 +5,13 @@ import java.util.Date;
 public class Saida {
     private String idSaida;
     private Veiculo veiculo;
-    private int tipo; //
+    private int tipo;
     private float valor;
     private String descricao;
     private int quilometragem;
     private float litrosAbastecidos;
     private float mediaCombustivel;
-    private Date data; //
+    private Date data;
 
     public Saida(Veiculo veiculo, int tipo, float valor, String descricao, int quilometragem, Date data) {
         this.veiculo = veiculo;

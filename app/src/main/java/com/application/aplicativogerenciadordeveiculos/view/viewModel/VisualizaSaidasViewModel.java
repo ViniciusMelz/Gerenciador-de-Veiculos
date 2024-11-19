@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -39,12 +40,13 @@ public class VisualizaSaidasViewModel extends ViewModel {
     }
 
     public void excluirSaida(Saida saida){
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Veículos").document(veiculo.getId()).delete().addOnCompleteListener(task -> {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Saídas").document(saida.getIdSaida()).delete().addOnCompleteListener(task -> {
+            sincronizarDadosAposExclusaoSaida(saida);
             mResultado.postValue(true);
         }).addOnFailureListener(e -> {
             mResultado.postValue(false);
-        });*/
+        });
     }
 
     public void adicionarSaidaNaLista(Saida saida) {
@@ -70,5 +72,13 @@ public class VisualizaSaidasViewModel extends ViewModel {
                 mlistaSaidas.setValue(listaSaidas);
             }
         }
+    }
+
+    public void sincronizarDadosAposExclusaoSaida(Saida saida) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        float valorTotalAtualizado = saida.getVeiculo().getValorTotalSaidas() - saida.getValor();
+        db.collection("Veículos").document(saida.getVeiculo().getId()).
+                update("valorTotalSaidas", valorTotalAtualizado).addOnCompleteListener(task -> {
+                });
     }
 }

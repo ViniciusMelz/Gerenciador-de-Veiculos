@@ -58,7 +58,11 @@ public class EntradaAdapter extends RecyclerView.Adapter<EntradaAdapter.MyViewHo
 
         holder.itemListRowBinding.tvItemData.setText(dataFormatada);
         holder.itemListRowBinding.tvItemValor.setText("R$" + valorEntrada.replace(".", ","));
-        holder.itemListRowBinding.tvItemDescricao.setText(entrada.getDescricao());
+        if(entrada.getDescricao().equals("")){
+            holder.itemListRowBinding.tvItemDescricao.setText("Não Informado!");
+        }else{
+            holder.itemListRowBinding.tvItemDescricao.setText(entrada.getDescricao());
+        }
         holder.itemListRowBinding.tvItemQuilometragem.setText(String.valueOf(entrada.getQuilometragem()) + " KM");
 
         if (entrada.getTipo() == 1) {

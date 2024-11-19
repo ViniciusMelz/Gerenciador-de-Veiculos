@@ -98,6 +98,10 @@ public class visualizaEntradasFragment extends Fragment {
     Observer<Boolean> observaExclusaoEntrada = aBoolean -> {
         if(aBoolean){
             Toast.makeText(getContext(), "Exclusão Realizada com Sucesso!", Toast.LENGTH_LONG).show();
+            DecimalFormat df = new DecimalFormat("0.00");
+            df.setMaximumFractionDigits(2);
+            String valorTotalEntrada = df.format(informacoesViewModel.getmVeiculoSelecionado().getValue().getValorTotalEntradas());
+            binding.tvItemValorTotalEntradas.setText("R$" + valorTotalEntrada.replace(".", ","));
         }else{
             Toast.makeText(getContext(), "ERRO: Não foi possível excluir o Registro de Entrada, Tente Novamente!", Toast.LENGTH_LONG).show();
         }
@@ -132,8 +136,7 @@ public class visualizaEntradasFragment extends Fragment {
 
     EntradaAdapter.EntradaOnClickListener trataCliqueEditarItem = (view, position, entrada) -> {
         informacoesViewModel.setEntradaSelecionada(entrada);
-        Navigation.findNavController(view).navigate(R.id.acao_visualizaEntradasFragment_para_visualizaEntradaDetalhadaFragment);
-        //TODO
+        Navigation.findNavController(view).navigate(R.id.acao_visualizaEntradasFragment_para_cadastroEntradaFragment);
     };
 
     @Override
@@ -208,7 +211,7 @@ public class visualizaEntradasFragment extends Fragment {
                 "                       'width':430,\n" +
                 "                       'height':350," +
                 "                       colors:['green','blue','red','brown','orange'],\n" +
-                "                       pieHole: 0.5," +
+                "                       pieHole: 0.4," +
                 "                       backgroundColor: '#D3D3D3'};\n" +
                 "\n" +
                 "        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));\n" +

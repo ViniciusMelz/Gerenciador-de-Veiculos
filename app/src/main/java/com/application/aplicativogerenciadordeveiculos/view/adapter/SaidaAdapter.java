@@ -57,7 +57,11 @@ public class SaidaAdapter extends RecyclerView.Adapter<SaidaAdapter.MyViewHolder
 
         holder.itemListRowBinding.tvItemData.setText(dataFormatada);
         holder.itemListRowBinding.tvItemValor.setText("R$" + valorSaida.replace(".", ","));
-        holder.itemListRowBinding.tvItemDescricao.setText(saida.getDescricao());
+        if(saida.getDescricao().equals("")){
+            holder.itemListRowBinding.tvItemDescricao.setText("Não Informado!");
+        }else{
+            holder.itemListRowBinding.tvItemDescricao.setText(saida.getDescricao());
+        }
         holder.itemListRowBinding.tvItemQuilometragem.setText(String.valueOf(saida.getQuilometragem()) + " KM");
 
         if (saida.getTipo() == 1) {

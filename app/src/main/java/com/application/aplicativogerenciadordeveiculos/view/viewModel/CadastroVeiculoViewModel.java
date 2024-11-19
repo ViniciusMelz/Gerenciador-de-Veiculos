@@ -80,7 +80,6 @@ public class CadastroVeiculoViewModel extends ViewModel {
     }
 
     public void atualizarVeiculo(Veiculo veiculo){
-        //metodo para atualizar veiculo no firebase
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Veículos").document(veiculo.getId()).
                 update("marca", veiculo.getMarca(),

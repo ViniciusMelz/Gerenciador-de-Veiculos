@@ -67,10 +67,15 @@ public class VisualizaSaidaDetalhadaFragment extends Fragment {
         binding.tvItemData.setText(dataFormatada);
         binding.tvItemQuilometragem.setText(saida.getQuilometragem() + " KM");
         binding.tvItemValor.setText("R$" + valorSaida.replace(".",","));
-        binding.tvItemDescricao.setText(saida.getDescricao());
+        if(saida.getDescricao().equals("")){
+            binding.tvItemDescricao.setText("Não Informado!");
+        }else{
+            binding.tvItemDescricao.setText(saida.getDescricao());
+        }
+
         if(saida.getTipo() == 1){
             binding.tvItemLitros.setText(String.valueOf(saida.getLitrosAbastecidos()).replace(".",",") + " L");
-            if(saida.getMediaCombustivel() == 0.0){
+            if(saida.getMediaCombustivel() != 0.0){
                 binding.tvItemMedia.setText(valorMedia.replace(".",",") + " KM/L");
             }else{
                 binding.tvItemMedia.setText("Não Informado!");

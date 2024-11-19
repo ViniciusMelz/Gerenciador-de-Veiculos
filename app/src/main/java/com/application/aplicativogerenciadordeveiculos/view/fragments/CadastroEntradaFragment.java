@@ -29,10 +29,12 @@ import com.application.aplicativogerenciadordeveiculos.view.viewModel.Informacoe
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.Locale;
 
@@ -67,6 +69,10 @@ public class CadastroEntradaFragment extends Fragment {
             carregaEntradaEdicao();
         }else{
             mViewModel.setmEntradaEdicao(null);
+            SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date dataAtual = new Date();
+            String dataAtualFormatada = formatador.format(dataAtual);
+            binding.etCadastroData.setText(dataAtualFormatada);
         }
 
         mViewModel.getResultado().observe(getViewLifecycleOwner(), observaCadastroEntrada);
@@ -98,7 +104,7 @@ public class CadastroEntradaFragment extends Fragment {
                     binding.etCadastroValor.requestFocus();
                     return;
                 }
-                if (Float.parseFloat(binding.etCadastroValor.getText().toString()) >= 0) {
+                if (Float.parseFloat(binding.etCadastroValor.getText().toString()) <= 0) {
                     binding.etCadastroValor.setError("ERRO: Informe um Valor Válido!");
                     binding.etCadastroValor.requestFocus();
                     return;
@@ -108,7 +114,7 @@ public class CadastroEntradaFragment extends Fragment {
                 DateTimeFormatter formatadorDeEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 LocalDateTime dataConvertida = LocalDateTime.parse(binding.etCadastroData.getText().toString(), formatadorDeEntrada);
                 ZonedDateTime dataComZona = dataConvertida.atZone(ZoneId.of("GMT-03:00"));
-                DateTimeFormatter formatadorDeSaida = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss O yyyy", java.util.Locale.ENGLISH);
+                DateTimeFormatter formatadorDeSaida = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", java.util.Locale.ENGLISH);
                 String dataFormatada = dataComZona.format(formatadorDeSaida);
                 SimpleDateFormat formatadorFinal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
                 Date data = new Date();
@@ -172,7 +178,12 @@ public class CadastroEntradaFragment extends Fragment {
     }
 
     public void carregaEntradaEdicao() {
-        binding.etCadastroData.setText(mViewModel.getEntradaEdicao().getValue().getData().toString());
+        String data = mViewModel.getEntradaEdicao().getValue().getData().toString();
+        DateTimeFormatter inputFormatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("EEE MMM dd HH:mm:ss O yyyy").toFormatter(Locale.ENGLISH);
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(data, inputFormatter);
+        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String dataFormatada = zonedDateTime.format(formatadorData);
+        binding.etCadastroData.setText(dataFormatada);
         binding.etCadastroValor.setText(String.valueOf(mViewModel.getEntradaEdicao().getValue().getValor()));
         binding.etCadastroDescricao.setText(mViewModel.getEntradaEdicao().getValue().getDescricao());
         binding.spCadastroTipo.setSelection(mViewModel.getEntradaEdicao().getValue().getTipo());

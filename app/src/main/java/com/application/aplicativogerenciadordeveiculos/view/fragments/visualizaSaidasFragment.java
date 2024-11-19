@@ -100,6 +100,10 @@ public class visualizaSaidasFragment extends Fragment {
     Observer<Boolean> observaExclusaoSaida = aBoolean -> {
         if(aBoolean){
             Toast.makeText(getContext(), "Exclusão Realizada com Sucesso!", Toast.LENGTH_LONG).show();
+            DecimalFormat df = new DecimalFormat("0.00");
+            df.setMaximumFractionDigits(2);
+            String valorTotalSaidas = df.format(informacoesViewModel.getmVeiculoSelecionado().getValue().getValorTotalSaidas());
+            binding.tvItemValorTotalSaidas.setText("R$" + valorTotalSaidas.replace(".", ","));
         }else{
             Toast.makeText(getContext(), "ERRO: Não foi possível excluir o Registro de Saída, Tente Novamente!", Toast.LENGTH_LONG).show();
         }
@@ -135,7 +139,6 @@ public class visualizaSaidasFragment extends Fragment {
     SaidaAdapter.SaidaOnClickListener trataCliqueEditarItem = (view, position, saida) -> {
         informacoesViewModel.setSaidaSelecionada(saida);
         Navigation.findNavController(view).navigate(R.id.acao_visualizaSaidasFragment_para_cadastroSaidaFragment);
-        //TODO
     };
 
     @Override
@@ -214,7 +217,7 @@ public class visualizaSaidasFragment extends Fragment {
                 "                       'width':430,\n" +
                 "                       'height':350," +
                 "                       colors:['orange','brown','green','red','blue'],\n" +
-                "                       pieHole: 0.5," +
+                "                       pieHole: 0.4," +
                 "                       backgroundColor: '#D3D3D3'};\n" +
                 "\n" +
                 "        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));\n" +

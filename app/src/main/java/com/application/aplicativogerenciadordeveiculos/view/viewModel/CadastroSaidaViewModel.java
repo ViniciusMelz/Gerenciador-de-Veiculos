@@ -3,13 +3,18 @@ package com.application.aplicativogerenciadordeveiculos.view.viewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.application.aplicativogerenciadordeveiculos.model.Entrada;
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CadastroSaidaViewModel extends ViewModel {
     private MutableLiveData<Boolean> mResultado;
     private MutableLiveData<Saida> mSaidaEdicao;
     private String erroCadastro;
+    private int quilometragemOriginal;
 
     public CadastroSaidaViewModel() {
         this.mResultado = new MutableLiveData<>();
@@ -44,49 +49,94 @@ public class CadastroSaidaViewModel extends ViewModel {
     }
 
     public void inserirSaida(Saida saida){
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Map<String, Object> veiculoMap = new HashMap<>();
-        veiculoMap.put("marca", veiculo.getMarca());
-        veiculoMap.put("modelo", veiculo.getModelo());
-        veiculoMap.put("ano", veiculo.getAno());
-        veiculoMap.put("placa", veiculo.getPlaca());
-        veiculoMap.put("tipo", veiculo.getTipo());
-        veiculoMap.put("email", veiculo.getUsuarioDono().getEmail());
-        veiculoMap.put("quilometragem", veiculo.getQuilometragem());
-        veiculoMap.put("mediaCombustivel", veiculo.getMediaCombustivel());
-        veiculoMap.put("valorTotalSaidas", veiculo.getValorTotalSaidas());
-        veiculoMap.put("valorTotalEntradas", veiculo.getValorTotalEntradas());
+        Map<String, Object> saidaMap = new HashMap<>();
+        saidaMap.put("idVeiculo", saida.getVeiculo().getId());
+        saidaMap.put("tipo", saida.getTipo());
+        saidaMap.put("valor", saida.getValor());
+        saidaMap.put("descricao", saida.getDescricao());
+        saidaMap.put("quilometragem", saida.getQuilometragem());
+        saidaMap.put("data", saida.getData());
+        saidaMap.put("litrosAbastecidos", saida.getLitrosAbastecidos());
+        saidaMap.put("mediaCombustivel", saida.getMediaCombustivel());
 
-        db.collection("Veículos").document().set(veiculoMap).addOnCompleteListener(taskSalvamento -> {
+        db.collection("Saídas").document().set(saidaMap).addOnCompleteListener(taskSalvamento -> {
             if(taskSalvamento.isSuccessful()){
+                this.sincronizarDadosAposSaida(saida, false);
                 mResultado.postValue(true);
             }else{
                 try {
                     throw taskSalvamento.getException();
                 } catch (Exception e) {
-                    erroCadastro = "Erro ao cadastrar veículo, tente novamente!";
+                    erroCadastro = "Erro ao cadastrar saída, tente novamente!";
                 }
                 mResultado.postValue(false);
             }
-        });*/
+        });
     }
 
     public void atualizarSaida(Saida saida){
-        /*
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Veículos").document(veiculo.getId()).
-                update("marca", veiculo.getMarca(),
-                        "modelo", veiculo.getModelo(),
-                        "ano", veiculo.getAno(),
-                        "placa", veiculo.getPlaca(),
-                        "tipo", veiculo.getTipo(),
-                        "email", veiculo.getUsuarioDono().getEmail(),
-                        "quilometragem", veiculo.getQuilometragem()).addOnCompleteListener(task -> {
+        db.collection("Saídas").document(saida.getIdSaida()).
+                update("idVeiculo", saida.getVeiculo().getId(),
+                        "tipo", saida.getTipo(),
+                        "valor", saida.getValor(),
+                        "descricao", saida.getDescricao(),
+                        "quilometragem", saida.getQuilometragem(),
+                        "data", saida.getData(),
+                        "litrosAbastecidos", saida.getLitrosAbastecidos(),
+                        "mediaCombustivel", saida.getMediaCombustivel()).addOnCompleteListener(task -> {
+                    this.sincronizarDadosAposSaida(saida, true);
                     this.mResultado.postValue(true);
-                    this.mVeiculoEdicao.postValue(null);
+                    this.mSaidaEdicao.postValue(null);
                 }).addOnFailureListener(e -> {
                     this.mResultado.postValue(false);
-                });*/
+                });
+    }
+
+    public void sincronizarDadosAposSaida(Saida saida, boolean ehAtualizacao){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Saídas")
+                .whereEqualTo("idVeiculo", saida.getVeiculo().getId()).whereEqualTo("tipo", 1)
+                .orderBy("quilometragem", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        quilometragemOriginal = queryDocumentSnapshots.getDocuments().get(0).getLong("quilometragem").intValue();
+                    }else{
+                        quilometragemOriginal = saida.getVeiculo().getQuilometragem();
+                    }
+                }).addOnFailureListener(e -> {
+                    quilometragemOriginal = saida.getVeiculo().getQuilometragem();
+                });
+        float valorTotalAtualizado;
+        if(ehAtualizacao){
+            valorTotalAtualizado = (saida.getVeiculo().getValorTotalSaidas() - this.getSaidaEdicao().getValue().getValor()) + saida.getValor();
+        }else{
+            valorTotalAtualizado = saida.getVeiculo().getValorTotalSaidas() + saida.getValor();
+        }
+
+        int quilometragemAtualizada = (saida.getQuilometragem() > quilometragemOriginal ? saida.getQuilometragem() : quilometragemOriginal);
+        float mediaCombustivel, mediaAtualizada;
+        if(saida.getMediaCombustivel() == 0.0){
+            mediaCombustivel = (saida.getQuilometragem() > quilometragemOriginal ? saida.getQuilometragem() - quilometragemOriginal : quilometragemOriginal - saida.getQuilometragem()) / saida.getLitrosAbastecidos();
+        }else{
+            mediaCombustivel = saida.getMediaCombustivel();
+        }
+
+        if(saida.getVeiculo().getMediaCombustivel() != 0.0){
+            mediaAtualizada = (mediaCombustivel + saida.getVeiculo().getMediaCombustivel()) / 2;
+        }else{
+            mediaAtualizada = mediaCombustivel;
+        }
+
+        quilometragemAtualizada = (quilometragemAtualizada > saida.getVeiculo().getQuilometragem() ? quilometragemAtualizada : saida.getVeiculo().getQuilometragem());
+        db.collection("Veículos").document(saida.getVeiculo().getId()).
+                update("quilometragem", quilometragemAtualizada,
+                        "valorTotalSaidas", valorTotalAtualizado,
+                        "mediaCombustivel", mediaAtualizada).addOnCompleteListener(task -> {
+                });
     }
 }

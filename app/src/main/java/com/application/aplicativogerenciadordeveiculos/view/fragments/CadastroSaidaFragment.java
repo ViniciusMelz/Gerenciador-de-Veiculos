@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.Locale;
 
@@ -62,7 +63,7 @@ public class CadastroSaidaFragment extends Fragment {
         binding.etCadastroMediaCombustivel.setVisibility(View.GONE);
         binding.etCadastroLitros.setVisibility(View.GONE);
 
-        if(informacoesViewModel.getmEntradaSelecionada().getValue() != null){
+        if(informacoesViewModel.getmSaidaSelecionada().getValue() != null){
             mViewModel.setmSaidaEdicao(informacoesViewModel.getmSaidaSelecionada().getValue());
             informacoesViewModel.zerarEntradaSelecionada();
             labelTela = "EDIÇÃO DE SAÍDA";
@@ -71,6 +72,10 @@ public class CadastroSaidaFragment extends Fragment {
             carregaSaidaEdicao();
         }else{
             mViewModel.setmSaidaEdicao(null);
+            SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date dataAtual = new Date();
+            String dataAtualFormatada = formatador.format(dataAtual);
+            binding.etCadastroData.setText(dataAtualFormatada);
         }
 
         mViewModel.getResultado().observe(getViewLifecycleOwner(), observaCadastroSaida);
@@ -80,7 +85,7 @@ public class CadastroSaidaFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(binding.spCadastroTipo.getSelectedItemPosition() == 1){
                     binding.etCadastroMediaCombustivel.setVisibility(View.VISIBLE);
-                    binding.etCadastroLitros.setVisibility(View.GONE);
+                    binding.etCadastroLitros.setVisibility(View.VISIBLE);
                 }else{
                     binding.etCadastroMediaCombustivel.setVisibility(View.GONE);
                     binding.etCadastroLitros.setVisibility(View.GONE);
@@ -120,7 +125,7 @@ public class CadastroSaidaFragment extends Fragment {
                     binding.etCadastroValor.requestFocus();
                     return;
                 }
-                if (Float.parseFloat(binding.etCadastroValor.getText().toString()) <= 0) {
+                if (Float.parseFloat(binding.etCadastroValor.getText().toString()) < 0) {
                     binding.etCadastroValor.setError("ERRO: Informe um Valor Válido!");
                     binding.etCadastroValor.requestFocus();
                     return;
@@ -136,10 +141,12 @@ public class CadastroSaidaFragment extends Fragment {
                         binding.etCadastroValor.requestFocus();
                         return;
                     }
-                    if (Float.parseFloat(binding.etCadastroMediaCombustivel.getText().toString()) <= 0 && !binding.etCadastroMediaCombustivel.getText().equals("")) {
-                        binding.etCadastroMediaCombustivel.setError("ERRO: Informe uma Média de Combustível Válida!");
-                        binding.etCadastroMediaCombustivel.requestFocus();
-                        return;
+                    if(binding.etCadastroMediaCombustivel.getText().length() != 0){
+                        if (Float.parseFloat(binding.etCadastroMediaCombustivel.getText().toString()) <= 0) {
+                            binding.etCadastroMediaCombustivel.setError("ERRO: Informe uma Média de Combustível Válida!");
+                            binding.etCadastroMediaCombustivel.requestFocus();
+                            return;
+                        }
                     }
                 }
 
@@ -147,7 +154,7 @@ public class CadastroSaidaFragment extends Fragment {
                 DateTimeFormatter formatadorDeEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 LocalDateTime dataConvertida = LocalDateTime.parse(binding.etCadastroData.getText().toString(), formatadorDeEntrada);
                 ZonedDateTime dataComZona = dataConvertida.atZone(ZoneId.of("GMT-03:00"));
-                DateTimeFormatter formatadorDeSaida = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss O yyyy", java.util.Locale.ENGLISH);
+                DateTimeFormatter formatadorDeSaida = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", java.util.Locale.ENGLISH);
                 String dataFormatada = dataComZona.format(formatadorDeSaida);
                 SimpleDateFormat formatadorFinal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
                 Date data = new Date();
@@ -161,7 +168,9 @@ public class CadastroSaidaFragment extends Fragment {
                 String descricao = binding.etCadastroDescricao.getText().toString();
                 float media = 0, litrosAbastecidos = 0;
                 if(binding.spCadastroTipo.getSelectedItemPosition() == 1){
-                    media = Float.parseFloat(binding.etCadastroMediaCombustivel.getText().toString());
+                    if(binding.etCadastroMediaCombustivel.getText().length() != 0) {
+                        media = Float.parseFloat(binding.etCadastroMediaCombustivel.getText().toString());
+                    }
                     litrosAbastecidos = Float.parseFloat(binding.etCadastroLitros.getText().toString());
                 }
 
@@ -220,13 +229,20 @@ public class CadastroSaidaFragment extends Fragment {
     }
 
     public void carregaSaidaEdicao() {
-        binding.etCadastroData.setText(mViewModel.getSaidaEdicao().getValue().getData().toString());
+        String data = mViewModel.getSaidaEdicao().getValue().getData().toString();
+        DateTimeFormatter inputFormatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("EEE MMM dd HH:mm:ss O yyyy").toFormatter(Locale.ENGLISH);
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(data, inputFormatter);
+        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String dataFormatada = zonedDateTime.format(formatadorData);
+        binding.etCadastroData.setText(dataFormatada);
         binding.etCadastroValor.setText(String.valueOf(mViewModel.getSaidaEdicao().getValue().getValor()));
         binding.etCadastroDescricao.setText(mViewModel.getSaidaEdicao().getValue().getDescricao());
         binding.spCadastroTipo.setSelection(mViewModel.getSaidaEdicao().getValue().getTipo());
         binding.etCadastroQuilometragem.setText(String.valueOf(mViewModel.getSaidaEdicao().getValue().getQuilometragem()));
         binding.etCadastroLitros.setText(String.valueOf(mViewModel.getSaidaEdicao().getValue().getLitrosAbastecidos()));
-        binding.etCadastroMediaCombustivel.setText(String.valueOf(mViewModel.getSaidaEdicao().getValue().getMediaCombustivel()));
+        if(mViewModel.getSaidaEdicao().getValue().getMediaCombustivel() != 0.0){
+            binding.etCadastroMediaCombustivel.setText(String.valueOf(mViewModel.getSaidaEdicao().getValue().getMediaCombustivel()));
+        }
     }
 
     @Override
