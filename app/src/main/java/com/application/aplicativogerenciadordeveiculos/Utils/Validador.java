@@ -1,5 +1,9 @@
 package com.application.aplicativogerenciadordeveiculos.Utils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Validador {
     public static boolean validaTexto(String texto) {
         boolean resultado;
@@ -29,5 +33,15 @@ public class Validador {
             resultado = false;
         }
         return resultado;
+    }
+
+    public static boolean ehDataValida(String data) {
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        try {
+            LocalDateTime.parse(data, formatador);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 }

@@ -134,7 +134,7 @@ public class visualizaSaidasFragment extends Fragment {
 
     SaidaAdapter.SaidaOnClickListener trataCliqueEditarItem = (view, position, saida) -> {
         informacoesViewModel.setSaidaSelecionada(saida);
-        Navigation.findNavController(view).navigate(R.id.acao_visualizaSaidasFragment_para_visualizaSaidaDetalhadaFragment);
+        Navigation.findNavController(view).navigate(R.id.acao_visualizaSaidasFragment_para_cadastroSaidaFragment);
         //TODO
     };
 

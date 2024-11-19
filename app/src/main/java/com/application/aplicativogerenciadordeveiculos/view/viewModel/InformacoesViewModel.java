@@ -199,6 +199,14 @@ public class InformacoesViewModel extends ViewModel {
         this.mVeiculoSelecionado = new MutableLiveData<>();
     }
 
+    public void zerarEntradaSelecionada(){
+        this.mEntradaSelecionada = new MutableLiveData<>();
+    }
+
+    public void zerarSaidaSelecionada(){
+        this.mSaidaSelecionada = new MutableLiveData<>();
+    }
+
     public void buscarVeiculosFirebase(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Veículos").whereEqualTo("email", this.getmUsuarioLogado().getValue().getEmail())
