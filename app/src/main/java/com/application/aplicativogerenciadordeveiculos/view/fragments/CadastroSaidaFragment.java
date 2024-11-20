@@ -66,7 +66,7 @@ public class CadastroSaidaFragment extends Fragment {
 
         if(informacoesViewModel.getmSaidaSelecionada().getValue() != null){
             mViewModel.setmSaidaEdicao(informacoesViewModel.getmSaidaSelecionada().getValue());
-            informacoesViewModel.zerarEntradaSelecionada();
+            informacoesViewModel.zerarSaidaSelecionada();
             labelTela = "EDIÇÃO DE SAÍDA";
             labelHeader = "Editar Saída";
             labelBotao = "Editar Saída";
@@ -179,7 +179,7 @@ public class CadastroSaidaFragment extends Fragment {
                 if (mViewModel.getSaidaEdicao().getValue() == null) {
                     saida = new Saida(informacoesViewModel.getmVeiculoSelecionado().getValue(), tipo, valor, descricao, quilometragem, litrosAbastecidos, media, data );
                     int quilometragemOriginal = informacoesViewModel.getmVeiculoSelecionado().getValue().getQuilometragem();
-                    if(saida.getTipo() == 1){
+                    if(saida.getTipo() == 1 && informacoesViewModel.getMlistaSaidas().getValue() != null){
                         for(int i = 0; i < informacoesViewModel.getMlistaSaidas().getValue().size(); i++){
                             if(informacoesViewModel.getMlistaSaidas().getValue().get(i).getTipo() == 1){
                                 quilometragemOriginal = informacoesViewModel.getMlistaSaidas().getValue().get(i).getQuilometragem();

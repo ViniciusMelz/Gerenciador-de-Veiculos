@@ -43,7 +43,6 @@ public class VisualizaEntradasViewModel extends ViewModel {
     public Veiculo excluirEntrada(Entrada entrada){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Entradas").document(entrada.getIdEntrada()).delete().addOnCompleteListener(task -> {
-            sincronizarDadosAposExclusaoEntrada(entrada);
             mResultado.postValue(true);
         }).addOnFailureListener(e -> {
             mResultado.postValue(false);

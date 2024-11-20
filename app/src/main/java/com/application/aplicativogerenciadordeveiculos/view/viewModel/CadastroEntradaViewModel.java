@@ -109,7 +109,7 @@ public class CadastroEntradaViewModel extends ViewModel {
         int quilometragemAtualizada = (entrada.getQuilometragem() > quilometragemOriginal ? entrada.getQuilometragem() : quilometragemOriginal);
         Veiculo veiculo = entrada.getVeiculo();
         veiculo.setQuilometragem(quilometragemAtualizada);
-        veiculo.setValorTotalSaidas(valorTotalAtualizado);
+        veiculo.setValorTotalEntradas(valorTotalAtualizado);
         db.collection("Veículos").document(entrada.getVeiculo().getId()).
                 update("quilometragem", quilometragemAtualizada,
                         "valorTotalEntradas", valorTotalAtualizado).addOnCompleteListener(task -> {
