@@ -27,6 +27,7 @@ import com.application.aplicativogerenciadordeveiculos.databinding.FragmentMenuP
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentVisualizaEntradasBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Entrada;
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
+import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
 import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
 import com.application.aplicativogerenciadordeveiculos.view.adapter.EntradaAdapter;
 import com.application.aplicativogerenciadordeveiculos.view.adapter.SaidaAdapter;
@@ -122,7 +123,10 @@ public class visualizaEntradasFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 informacoesViewModel.removerEntradaDaLista(position);
-                mViewModel.excluirEntrada(entrada);
+                Veiculo veiculoAtt;
+                veiculoAtt = mViewModel.excluirEntrada(entrada);
+                informacoesViewModel.getmVeiculoSelecionado().getValue().setValorTotalEntradas(veiculoAtt.getValorTotalEntradas());
+                atualizaListagem(informacoesViewModel.getMlistaEntradas().getValue());
             }
         });
         msgConfirmacao.setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -170,6 +174,7 @@ public class visualizaEntradasFragment extends Fragment {
     }
 
     private void carregaGoogleChart(WebView webView) {
+        valorTotalMotoboy = valorTotalMotorista = valorTotalFrete = valorTotalAluguelDoVeiculo = valorTotalOutros = 0;
         if(informacoesViewModel.getMlistaEntradas().getValue() != null){
             for (int i = 0; i < informacoesViewModel.getMlistaEntradas().getValue().size(); i++) {
                 if(informacoesViewModel.getMlistaEntradas().getValue().get(i).getTipo() == 1){

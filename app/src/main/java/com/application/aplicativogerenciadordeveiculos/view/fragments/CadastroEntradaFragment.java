@@ -130,10 +130,12 @@ public class CadastroEntradaFragment extends Fragment {
                 Entrada entrada = null;
                 if (mViewModel.getEntradaEdicao().getValue() == null) {
                     entrada = new Entrada(informacoesViewModel.getmVeiculoSelecionado().getValue(), tipo, valor, descricao, data, quilometragem );
-                    mViewModel.inserirEntrada(entrada);
+                    int quilometragemOriginal = informacoesViewModel.getmVeiculoSelecionado().getValue().getQuilometragem();
+                    mViewModel.inserirEntrada(entrada, quilometragemOriginal);
                     informacoesViewModel.adicionarEntradaNaLista(entrada);
                     limpaCampos();
                 } else {
+                    float valorOriginal = mViewModel.getEntradaEdicao().getValue().getValor();
                     entrada = mViewModel.getEntradaEdicao().getValue();
                     entrada.setVeiculo(informacoesViewModel.getmVeiculoSelecionado().getValue());
                     entrada.setTipo(tipo);
@@ -142,7 +144,10 @@ public class CadastroEntradaFragment extends Fragment {
                     entrada.setValor(valor);
                     entrada.setDescricao(descricao);
 
-                    mViewModel.atualizarEntrada(entrada);
+                    Veiculo veiculoAtt = new Veiculo();
+                    veiculoAtt = mViewModel.atualizarEntrada(entrada, informacoesViewModel.getmVeiculoSelecionado().getValue().getQuilometragem(), valorOriginal);
+                    informacoesViewModel.getmVeiculoSelecionado().getValue().setValorTotalEntradas(veiculoAtt.getValorTotalEntradas());
+                    informacoesViewModel.getmVeiculoSelecionado().getValue().setQuilometragem(veiculoAtt.getQuilometragem());
                     Toast.makeText(getContext(), "Entrada Atualizada com Sucesso!", Toast.LENGTH_LONG).show();
                     Navigation.findNavController(view).popBackStack();
                 }

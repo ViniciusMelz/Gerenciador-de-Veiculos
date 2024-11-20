@@ -230,7 +230,7 @@ public class InformacoesViewModel extends ViewModel {
 
     public void buscaEntradasFirebase(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Entradas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId())
+        db.collection("Entradas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId()).orderBy("data", Query.Direction.DESCENDING)
                 .addSnapshotListener((querySnapshot, e) -> {
                     if (e != null) {
                         return;
@@ -250,7 +250,7 @@ public class InformacoesViewModel extends ViewModel {
 
     public void buscaSaidasFirebase(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Saídas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId())
+        db.collection("Saídas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId()).orderBy("data", Query.Direction.DESCENDING)
                 .addSnapshotListener((querySnapshot, e) -> {
                     if (e != null) {
                         return;

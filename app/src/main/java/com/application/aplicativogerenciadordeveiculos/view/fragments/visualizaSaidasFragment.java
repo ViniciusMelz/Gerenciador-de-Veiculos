@@ -124,7 +124,10 @@ public class visualizaSaidasFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 informacoesViewModel.removerSaidaDaLista(position);
-                mViewModel.excluirSaida(saida);
+                Veiculo veiculoAtt;
+                veiculoAtt = mViewModel.excluirSaida(saida);
+                informacoesViewModel.getmVeiculoSelecionado().getValue().setValorTotalSaidas(veiculoAtt.getValorTotalSaidas());
+                atualizaListagem(informacoesViewModel.getMlistaSaidas().getValue());
             }
         });
         msgConfirmacao.setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -158,7 +161,6 @@ public class visualizaSaidasFragment extends Fragment {
     }
 
     public void atualizaListagem(ArrayList<Saida> listaSaidas) {
-        if (listaSaidas != null) {
             SaidaAdapter saidaAdapter = new SaidaAdapter(listaSaidas, trataCliqueItem, trataCliqueExcluirItem, trataCliqueEditarItem);
             binding.rvVisualizaSaidas.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.rvVisualizaSaidas.setItemAnimator(new DefaultItemAnimator());
@@ -168,11 +170,11 @@ public class visualizaSaidasFragment extends Fragment {
 
             binding.wvGrafico.setWebViewClient(new WebViewClient());
             carregaGoogleChart(binding.wvGrafico);
-        }
     }
 
     private void carregaGoogleChart(WebView webView) {
         ArrayList<Saida> listaSaidas = informacoesViewModel.getMlistaSaidas().getValue();
+        valorTotalAbastecimentos = valorTotalManutencoes = valorTotalImpostos = valorTotalSeguro = valorTotalAluguel = valorTotalOutros = 0;
         if(listaSaidas != null){
             for (int i = 0; i < listaSaidas.size(); i++) {
                 if(listaSaidas.get(i).getTipo() == 1){

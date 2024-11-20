@@ -51,7 +51,7 @@ public class CadastroEntradaViewModel extends ViewModel {
         this.mEntradaEdicao.setValue(entrada);
     }
 
-    public void inserirEntrada(Entrada entrada){
+    public Veiculo inserirEntrada(Entrada entrada, int quilometragemOriginal){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> entradaMap = new HashMap<>();
@@ -64,7 +64,6 @@ public class CadastroEntradaViewModel extends ViewModel {
 
         db.collection("Entradas").document().set(entradaMap).addOnCompleteListener(taskSalvamento -> {
             if(taskSalvamento.isSuccessful()){
-                this.sincronizarDadosAposEntrada(entrada, false);
                 mResultado.postValue(true);
             }else{
                 try {
@@ -75,9 +74,12 @@ public class CadastroEntradaViewModel extends ViewModel {
                 mResultado.postValue(false);
             }
         });
+        Veiculo veiculoAtt = new Veiculo();
+        veiculoAtt = this.sincronizarDadosAposEntrada(entrada, false, quilometragemOriginal, 0);
+        return veiculoAtt;
     }
 
-    public void atualizarEntrada(Entrada entrada){
+    public Veiculo atualizarEntrada(Entrada entrada, int quilometragemOriginal, float valorOriginal){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Entradas").document(entrada.getIdEntrada()).
                 update("idVeiculo", entrada.getVeiculo().getId(),
@@ -86,26 +88,33 @@ public class CadastroEntradaViewModel extends ViewModel {
                         "descricao", entrada.getDescricao(),
                         "quilometragem", entrada.getQuilometragem(),
                         "data", entrada.getData()).addOnCompleteListener(task -> {
-                    this.sincronizarDadosAposEntrada(entrada, true);
                     this.mResultado.postValue(true);
                     this.mEntradaEdicao.postValue(null);
                 }).addOnFailureListener(e -> {
                     this.mResultado.postValue(false);
                 });
+        Veiculo veiculoAtt = new Veiculo();
+        veiculoAtt = this.sincronizarDadosAposEntrada(entrada, true, quilometragemOriginal, valorOriginal);
+        return veiculoAtt;
     }
 
-    public void sincronizarDadosAposEntrada(Entrada entrada, boolean atualizacao){
+    public Veiculo sincronizarDadosAposEntrada(Entrada entrada, boolean ehAtualizacao, int quilometragemOriginal, float valorOriginal){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        int quilometragemAtualizada = (entrada.getQuilometragem() > entrada.getVeiculo().getQuilometragem() ? entrada.getQuilometragem() : entrada.getVeiculo().getQuilometragem());
         float valorTotalAtualizado;
-        if(atualizacao){
-            valorTotalAtualizado = (entrada.getVeiculo().getValorTotalEntradas() - this.getEntradaEdicao().getValue().getValor()) + entrada.getValor();
+        if(ehAtualizacao){
+            valorTotalAtualizado = (entrada.getVeiculo().getValorTotalEntradas() - valorOriginal) + entrada.getValor();
         }else{
             valorTotalAtualizado = entrada.getVeiculo().getValorTotalEntradas() + entrada.getValor();
         }
+        int quilometragemAtualizada = (entrada.getQuilometragem() > quilometragemOriginal ? entrada.getQuilometragem() : quilometragemOriginal);
+        Veiculo veiculo = entrada.getVeiculo();
+        veiculo.setQuilometragem(quilometragemAtualizada);
+        veiculo.setValorTotalSaidas(valorTotalAtualizado);
         db.collection("Veículos").document(entrada.getVeiculo().getId()).
                 update("quilometragem", quilometragemAtualizada,
                         "valorTotalEntradas", valorTotalAtualizado).addOnCompleteListener(task -> {
                 });
+
+        return veiculo;
     }
 }

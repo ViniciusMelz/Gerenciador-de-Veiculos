@@ -4,9 +4,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
+import com.application.aplicativogerenciadordeveiculos.model.Usuario;
+import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +18,6 @@ public class CadastroSaidaViewModel extends ViewModel {
     private MutableLiveData<Boolean> mResultado;
     private MutableLiveData<Saida> mSaidaEdicao;
     private String erroCadastro;
-    private int quilometragemOriginal;
 
     public CadastroSaidaViewModel() {
         this.mResultado = new MutableLiveData<>();
@@ -48,7 +51,7 @@ public class CadastroSaidaViewModel extends ViewModel {
         this.mSaidaEdicao.setValue(saida);
     }
 
-    public void inserirSaida(Saida saida){
+    public Veiculo inserirSaida(Saida saida, int quilometragemOriginal){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> saidaMap = new HashMap<>();
@@ -63,7 +66,6 @@ public class CadastroSaidaViewModel extends ViewModel {
 
         db.collection("Saídas").document().set(saidaMap).addOnCompleteListener(taskSalvamento -> {
             if(taskSalvamento.isSuccessful()){
-                this.sincronizarDadosAposSaida(saida, false);
                 mResultado.postValue(true);
             }else{
                 try {
@@ -74,9 +76,12 @@ public class CadastroSaidaViewModel extends ViewModel {
                 mResultado.postValue(false);
             }
         });
+        Veiculo veiculoAtt = new Veiculo();
+        veiculoAtt = this.sincronizarDadosAposSaida(saida, false, quilometragemOriginal, 0);
+        return veiculoAtt;
     }
 
-    public void atualizarSaida(Saida saida){
+    public Veiculo atualizarSaida(Saida saida, int quilometragemOriginal, float valorOriginal){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Saídas").document(saida.getIdSaida()).
                 update("idVeiculo", saida.getVeiculo().getId(),
@@ -87,33 +92,21 @@ public class CadastroSaidaViewModel extends ViewModel {
                         "data", saida.getData(),
                         "litrosAbastecidos", saida.getLitrosAbastecidos(),
                         "mediaCombustivel", saida.getMediaCombustivel()).addOnCompleteListener(task -> {
-                    this.sincronizarDadosAposSaida(saida, true);
                     this.mResultado.postValue(true);
                     this.mSaidaEdicao.postValue(null);
                 }).addOnFailureListener(e -> {
                     this.mResultado.postValue(false);
                 });
+        Veiculo veiculoAtt = new Veiculo();
+        veiculoAtt = this.sincronizarDadosAposSaida(saida, true, quilometragemOriginal, valorOriginal);
+        return veiculoAtt;
     }
 
-    public void sincronizarDadosAposSaida(Saida saida, boolean ehAtualizacao){
+    public Veiculo sincronizarDadosAposSaida(Saida saida, boolean ehAtualizacao, int quilometragemOriginal, float valorOriginal){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Saídas")
-                .whereEqualTo("idVeiculo", saida.getVeiculo().getId()).whereEqualTo("tipo", 1)
-                .orderBy("quilometragem", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        quilometragemOriginal = queryDocumentSnapshots.getDocuments().get(0).getLong("quilometragem").intValue();
-                    }else{
-                        quilometragemOriginal = saida.getVeiculo().getQuilometragem();
-                    }
-                }).addOnFailureListener(e -> {
-                    quilometragemOriginal = saida.getVeiculo().getQuilometragem();
-                });
         float valorTotalAtualizado;
         if(ehAtualizacao){
-            valorTotalAtualizado = (saida.getVeiculo().getValorTotalSaidas() - this.getSaidaEdicao().getValue().getValor()) + saida.getValor();
+            valorTotalAtualizado = (saida.getVeiculo().getValorTotalSaidas() - valorOriginal) + saida.getValor();
         }else{
             valorTotalAtualizado = saida.getVeiculo().getValorTotalSaidas() + saida.getValor();
         }
@@ -126,17 +119,34 @@ public class CadastroSaidaViewModel extends ViewModel {
             mediaCombustivel = saida.getMediaCombustivel();
         }
 
-        if(saida.getVeiculo().getMediaCombustivel() != 0.0){
+        if(ehAtualizacao){
+            mediaAtualizada = saida.getVeiculo().getMediaCombustivel();
+        }else if(saida.getVeiculo().getMediaCombustivel() != 0.0 && mediaCombustivel != 0.0){
             mediaAtualizada = (mediaCombustivel + saida.getVeiculo().getMediaCombustivel()) / 2;
         }else{
             mediaAtualizada = mediaCombustivel;
         }
+        Veiculo veiculo = saida.getVeiculo();
 
-        quilometragemAtualizada = (quilometragemAtualizada > saida.getVeiculo().getQuilometragem() ? quilometragemAtualizada : saida.getVeiculo().getQuilometragem());
-        db.collection("Veículos").document(saida.getVeiculo().getId()).
-                update("quilometragem", quilometragemAtualizada,
-                        "valorTotalSaidas", valorTotalAtualizado,
-                        "mediaCombustivel", mediaAtualizada).addOnCompleteListener(task -> {
-                });
+
+        if(saida.getTipo() == 1){
+            veiculo.setQuilometragem(quilometragemAtualizada);
+            veiculo.setValorTotalSaidas(valorTotalAtualizado);
+            veiculo.setMediaCombustivel(mediaAtualizada);
+            db.collection("Veículos").document(saida.getVeiculo().getId()).
+                    update("quilometragem", quilometragemAtualizada,
+                            "valorTotalSaidas", valorTotalAtualizado,
+                            "mediaCombustivel", mediaAtualizada).addOnCompleteListener(task -> {
+                    });
+        }else{
+            veiculo.setQuilometragem(quilometragemAtualizada);
+            veiculo.setValorTotalSaidas(valorTotalAtualizado);
+            db.collection("Veículos").document(saida.getVeiculo().getId()).
+                    update("quilometragem", quilometragemAtualizada,
+                            "valorTotalSaidas", valorTotalAtualizado).addOnCompleteListener(task -> {
+                    });
+        }
+
+        return veiculo;
     }
 }

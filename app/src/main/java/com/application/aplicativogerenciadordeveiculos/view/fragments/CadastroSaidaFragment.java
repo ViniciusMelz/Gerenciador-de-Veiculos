@@ -22,6 +22,7 @@ import com.application.aplicativogerenciadordeveiculos.databinding.FragmentCadas
 import com.application.aplicativogerenciadordeveiculos.databinding.FragmentCadastroVeiculoBinding;
 import com.application.aplicativogerenciadordeveiculos.model.Entrada;
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
+import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
 import com.application.aplicativogerenciadordeveiculos.view.activities.MainActivity;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.CadastroEntradaViewModel;
 import com.application.aplicativogerenciadordeveiculos.view.viewModel.CadastroSaidaViewModel;
@@ -177,10 +178,20 @@ public class CadastroSaidaFragment extends Fragment {
                 Saida saida = null;
                 if (mViewModel.getSaidaEdicao().getValue() == null) {
                     saida = new Saida(informacoesViewModel.getmVeiculoSelecionado().getValue(), tipo, valor, descricao, quilometragem, litrosAbastecidos, media, data );
-                    mViewModel.inserirSaida(saida);
+                    int quilometragemOriginal = informacoesViewModel.getmVeiculoSelecionado().getValue().getQuilometragem();
+                    if(saida.getTipo() == 1){
+                        for(int i = 0; i < informacoesViewModel.getMlistaSaidas().getValue().size(); i++){
+                            if(informacoesViewModel.getMlistaSaidas().getValue().get(i).getTipo() == 1){
+                                quilometragemOriginal = informacoesViewModel.getMlistaSaidas().getValue().get(i).getQuilometragem();
+                                break;
+                            }
+                        }
+                    }
+                    mViewModel.inserirSaida(saida, quilometragemOriginal);
                     informacoesViewModel.adicionarSaidaNaLista(saida);
                     limpaCampos();
                 } else {
+                    float valorOriginal = mViewModel.getSaidaEdicao().getValue().getValor();
                     saida = mViewModel.getSaidaEdicao().getValue();
                     saida.setVeiculo(informacoesViewModel.getmVeiculoSelecionado().getValue());
                     saida.setTipo(tipo);
@@ -191,7 +202,11 @@ public class CadastroSaidaFragment extends Fragment {
                     saida.setMediaCombustivel(media);
                     saida.setLitrosAbastecidos(litrosAbastecidos);
 
-                    mViewModel.atualizarSaida(saida);
+                    Veiculo veiculoAtt = new Veiculo();
+                    veiculoAtt = mViewModel.atualizarSaida(saida, informacoesViewModel.getmVeiculoSelecionado().getValue().getQuilometragem(), valorOriginal);
+                    informacoesViewModel.getmVeiculoSelecionado().getValue().setValorTotalSaidas(veiculoAtt.getValorTotalSaidas());
+                    informacoesViewModel.getmVeiculoSelecionado().getValue().setQuilometragem(veiculoAtt.getQuilometragem());
+                    informacoesViewModel.getmVeiculoSelecionado().getValue().setMediaCombustivel(veiculoAtt.getMediaCombustivel());
                     Toast.makeText(getContext(), "Saída Atualizada com Sucesso!", Toast.LENGTH_LONG).show();
                     Navigation.findNavController(view).popBackStack();
                 }

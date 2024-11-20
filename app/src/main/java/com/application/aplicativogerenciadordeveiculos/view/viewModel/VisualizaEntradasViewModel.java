@@ -40,7 +40,7 @@ public class VisualizaEntradasViewModel extends ViewModel {
         this.mResultado.postValue(resultado);
     }
 
-    public void excluirEntrada(Entrada entrada){
+    public Veiculo excluirEntrada(Entrada entrada){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Entradas").document(entrada.getIdEntrada()).delete().addOnCompleteListener(task -> {
             sincronizarDadosAposExclusaoEntrada(entrada);
@@ -48,6 +48,10 @@ public class VisualizaEntradasViewModel extends ViewModel {
         }).addOnFailureListener(e -> {
             mResultado.postValue(false);
         });
+
+        Veiculo veiculoAtt = new Veiculo();
+        veiculoAtt = sincronizarDadosAposExclusaoEntrada(entrada);
+        return veiculoAtt;
     }
 
     public void adicionarEntradaNaLista(Entrada entrada) {
@@ -75,12 +79,16 @@ public class VisualizaEntradasViewModel extends ViewModel {
         }
     }
 
-    public void sincronizarDadosAposExclusaoEntrada(Entrada entrada) {
+    public Veiculo sincronizarDadosAposExclusaoEntrada(Entrada entrada) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         float valorTotalAtualizado = entrada.getVeiculo().getValorTotalEntradas() - entrada.getValor();
         db.collection("Veículos").document(entrada.getVeiculo().getId()).
                 update("valorTotalEntradas", valorTotalAtualizado).addOnCompleteListener(task -> {
                 });
+
+        Veiculo veiculoAtt = entrada.getVeiculo();
+        veiculoAtt.setValorTotalEntradas(valorTotalAtualizado);
+        return veiculoAtt;
     }
 
 }
