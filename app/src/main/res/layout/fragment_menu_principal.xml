@@ -8,19 +8,40 @@
     android:background="@color/light_gray">
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bAdicionarVeiculo"
+        android:id="@+id/bCompararVeiculos"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bAdicionarVeiculo"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         android:textColor="@color/white"
-        android:text="Adicionar Veiculo"
+        android:text="Comparar\nVeículos"
         android:backgroundTint="@color/black"
         android:textSize="50px"
         android:textStyle="bold"
         android:layout_marginHorizontal="10dp"
-        android:height="50dp"
+        android:height="80dp"
+        android:width="180dp"
+        android:layout_marginStart="5dp"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bAdicionarVeiculo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bCompararVeiculos"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:text="Adicionar\nVeículo"
+        android:backgroundTint="@color/black"
+        android:textSize="50px"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="10dp"
+        android:height="80dp"
+        android:width="180dp"
+        android:layout_marginEnd="5dp"
         />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -31,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bAdicionarVeiculo"
         tools:listitem="@layout/item_list_row_veiculo"
-        android:paddingBottom="60dp"
+        android:paddingBottom="90dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

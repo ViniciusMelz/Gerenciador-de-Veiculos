@@ -122,4 +122,10 @@
             Outro
         </item>
     </string-array>
+
+    <string-array name="comparacaoVeiculos" >
+        <item>
+            Nenhum Veículo Cadastrado!
+        </item>
+    </string-array>
 </resources>

@@ -70,6 +70,13 @@ public class MenuPrincipalFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.acao_menuPrincipalFragment_para_cadastroVeiculoFragment);
             }
         });
+
+        binding.bCompararVeiculos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.acao_menuPrincipalFragment_para_comparacaoVeiculosFragment);
+            }
+        });
     }
 
     Observer<ArrayList<Veiculo>> observaListaVeiculos = new Observer<ArrayList<Veiculo>>() {

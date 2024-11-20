@@ -35,6 +35,9 @@
         <action
             android:id="@+id/acao_menuPrincipalFragment_para_visualizaRelatorioFragment3"
             app:destination="@id/visualizaRelatorioFragment" />
+        <action
+            android:id="@+id/acao_menuPrincipalFragment_para_comparacaoVeiculosFragment"
+            app:destination="@id/comparacaoVeiculosFragment" />
     </fragment>
     <action
         android:id="@+id/acao_global_loginFragment"
@@ -127,5 +130,14 @@
         <action
             android:id="@+id/acao_cadastroSaidaFragment_para_visualizaSaidasFragment"
             app:destination="@id/visualizaSaidasFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/comparacaoVeiculosFragment"
+        android:name="com.application.aplicativogerenciadordeveiculos.view.fragments.ComparacaoVeiculosFragment"
+        android:label="Compare 2 Veículos"
+        tools:layout="@layout/fragment_comparacao_veiculos" >
+        <action
+            android:id="@+id/acao_comparacaoVeiculosFragment_para_menuPrincipalFragment"
+            app:destination="@id/menuPrincipalFragment" />
     </fragment>
 </navigation>

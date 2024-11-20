@@ -156,4 +156,9 @@ public class Veiculo implements Serializable {
     public void setValorTotalEntradas(float valorTotalEntradas) {
         this.valorTotalEntradas = valorTotalEntradas;
     }
+
+    @Override
+    public String toString() {
+        return marca + " " + modelo;
+    }
 }
