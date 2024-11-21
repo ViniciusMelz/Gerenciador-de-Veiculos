@@ -7,11 +7,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
+import com.google.android.gms.auth.api.Auth;
+import com.google.api.Authentication;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -51,7 +55,13 @@ public class LoginViewModel extends ViewModel {
 
         auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                mUsuarioLogado.postValue(usuario);
+                FirebaseUser usuarioLogado = FirebaseAuth.getInstance().getCurrentUser();
+                if(usuarioLogado != null){
+                    mUsuarioLogado.postValue(usuario);
+                }else {
+                    erroLogin = "Erro ao logar usuário, tente novamente!";
+                    mUsuarioLogado.postValue(null);
+                }
             } else {
                 try {
                     throw task.getException();
@@ -68,8 +78,11 @@ public class LoginViewModel extends ViewModel {
 
         db.collection("Usuários").document(email).addSnapshotListener((documento, error) -> {
             if(documento != null){
-                usuario.setNome(documento.getString("nome"));
-                mUsuarioLogado.postValue(usuario);
+                FirebaseUser usuarioLogado = FirebaseAuth.getInstance().getCurrentUser();
+                if(usuarioLogado != null) {
+                    usuario.setNome(documento.getString("nome"));
+                    mUsuarioLogado.postValue(usuario);
+                }
             }
         });
     }

@@ -58,6 +58,11 @@ public class LoginFragment extends Fragment {
                     binding.etEmailUsuario.requestFocus();
                     return;
                 }
+                if (!Validador.validaEmail(binding.etEmailUsuario.getText().toString().trim())) {
+                    binding.etEmailUsuario.setError("ERRO: Informe um Email Válido!");
+                    binding.etEmailUsuario.requestFocus();
+                    return;
+                }
                 if (!Validador.validaTexto(binding.etLoginSenha.getText().toString().trim())) {
                     binding.etLoginSenha.setError("ERRO: Informe a senha!");
                     binding.etLoginSenha.requestFocus();

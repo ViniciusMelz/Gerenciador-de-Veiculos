@@ -48,7 +48,7 @@ public class ComparacaoVeiculosFragment extends Fragment {
 
         ArrayList<Veiculo> listaVeiculos = informacoesViewModel.getListaVeiculos().getValue();
         mViewModel.setmListaVeiculos(informacoesViewModel.getListaVeiculos());
-        if(!listaVeiculos.isEmpty()){
+        if(listaVeiculos != null){
             ArrayAdapter<Veiculo> adapterVeiculos = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaVeiculos);
             adapterVeiculos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             binding.spCadastroVeiculo1.setAdapter(adapterVeiculos);
@@ -83,28 +83,31 @@ public class ComparacaoVeiculosFragment extends Fragment {
         binding.spCadastroVeiculo1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int posicaoSelecionada = binding.spCadastroVeiculo1.getSelectedItemPosition();
-                DecimalFormat df = new DecimalFormat("0.00");
-                df.setMaximumFractionDigits(2);
-                String mediaCombustivel;
-                if(listaVeiculos.get(posicaoSelecionada).getMediaCombustivel() != 0.0){
-                    mediaCombustivel = df.format(listaVeiculos.get(posicaoSelecionada).getMediaCombustivel());
-                    mediaCombustivel = mediaCombustivel.replace(".",",") + " KM";
-                }else{
-                    mediaCombustivel = "Não Informada!";
-                }
-                String valorTotalEntradas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalEntradas());
-                String valorTotalSaidas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalSaidas());
+                if(listaVeiculos != null) {
+                    int posicaoSelecionada = binding.spCadastroVeiculo1.getSelectedItemPosition();
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    df.setMaximumFractionDigits(2);
+                    String mediaCombustivel;
+                    if (listaVeiculos.get(posicaoSelecionada).getMediaCombustivel() != 0.0) {
+                        mediaCombustivel = df.format(listaVeiculos.get(posicaoSelecionada).getMediaCombustivel());
+                        mediaCombustivel = mediaCombustivel.replace(".", ",") + " KM";
+                    } else {
+                        mediaCombustivel = "Não Informada!";
+                    }
+                    String valorTotalEntradas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalEntradas());
+                    String valorTotalSaidas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalSaidas());
 
-                String modelo = (listaVeiculos.get(posicaoSelecionada).getModelo().length() > 10 ? listaVeiculos.get(posicaoSelecionada).getModelo().substring(0, 9) + "..." : listaVeiculos.get(posicaoSelecionada).getModelo());
-                binding.tvLabelVeiculo1.setText(listaVeiculos.get(posicaoSelecionada).getMarca() + "\n" + modelo);
-                binding.tvItemPlaca1.setText(listaVeiculos.get(posicaoSelecionada).getPlaca().toUpperCase());
-                binding.tvItemTipo1.setText(listaVeiculos.get(posicaoSelecionada).getTipoLiteral());
-                binding.tvItemAno1.setText(String.valueOf(listaVeiculos.get(posicaoSelecionada).getAno()));
-                binding.tvItemQuilometragem1.setText(listaVeiculos.get(posicaoSelecionada).getQuilometragem() + " KM");
-                binding.tvItemMediaCombustivel1.setText(mediaCombustivel);
-                binding.tvItemValorTotalEntradas1.setText("R$ " + valorTotalEntradas.replace(".",","));
-                binding.tvItemValorTotalSaidas1.setText("R$ " + valorTotalSaidas.replace(".",","));
+                    String modelo = (listaVeiculos.get(posicaoSelecionada).getModelo().length() > 10 ? listaVeiculos.get(posicaoSelecionada).getModelo().substring(0, 9) + "..." : listaVeiculos.get(posicaoSelecionada).getModelo());
+                    binding.tvLabelVeiculo1.setText(listaVeiculos.get(posicaoSelecionada).getMarca() + "\n" + modelo);
+                    binding.tvItemPlaca1.setText(listaVeiculos.get(posicaoSelecionada).getPlaca().toUpperCase());
+                    binding.tvItemTipo1.setText(listaVeiculos.get(posicaoSelecionada).getTipoLiteral());
+                    binding.tvItemAno1.setText(String.valueOf(listaVeiculos.get(posicaoSelecionada).getAno()));
+                    binding.tvItemQuilometragem1.setText(listaVeiculos.get(posicaoSelecionada).getQuilometragem() + " KM");
+                    binding.tvItemMediaCombustivel1.setText(mediaCombustivel);
+                    binding.tvItemValorTotalEntradas1.setText("R$ " + valorTotalEntradas.replace(".", ","));
+                    binding.tvItemValorTotalSaidas1.setText("R$ " + valorTotalSaidas.replace(".", ","));
+
+                }
             }
 
             @Override
@@ -116,28 +119,30 @@ public class ComparacaoVeiculosFragment extends Fragment {
         binding.spCadastroVeiculo2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int posicaoSelecionada = binding.spCadastroVeiculo2.getSelectedItemPosition();
-                DecimalFormat df = new DecimalFormat("0.00");
-                df.setMaximumFractionDigits(2);
-                String mediaCombustivel;
-                if(listaVeiculos.get(posicaoSelecionada).getMediaCombustivel() != 0.0){
-                    mediaCombustivel = df.format(listaVeiculos.get(posicaoSelecionada).getMediaCombustivel());
-                    mediaCombustivel = mediaCombustivel.replace(".",",") + " KM";
-                }else{
-                    mediaCombustivel = "Não Informada!";
-                }
-                String valorTotalEntradas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalEntradas());
-                String valorTotalSaidas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalSaidas());
+                if(listaVeiculos != null) {
+                    int posicaoSelecionada = binding.spCadastroVeiculo2.getSelectedItemPosition();
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    df.setMaximumFractionDigits(2);
+                    String mediaCombustivel;
+                    if (listaVeiculos.get(posicaoSelecionada).getMediaCombustivel() != 0.0) {
+                        mediaCombustivel = df.format(listaVeiculos.get(posicaoSelecionada).getMediaCombustivel());
+                        mediaCombustivel = mediaCombustivel.replace(".", ",") + " KM";
+                    } else {
+                        mediaCombustivel = "Não Informada!";
+                    }
+                    String valorTotalEntradas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalEntradas());
+                    String valorTotalSaidas = df.format(listaVeiculos.get(posicaoSelecionada).getValorTotalSaidas());
 
-                String modelo = (listaVeiculos.get(posicaoSelecionada).getModelo().length() > 9 ? listaVeiculos.get(posicaoSelecionada).getModelo().substring(0, 9) + "..." : listaVeiculos.get(posicaoSelecionada).getModelo());
-                binding.tvLabelVeiculo2.setText(listaVeiculos.get(posicaoSelecionada).getMarca() + "\n" + modelo);
-                binding.tvItemPlaca2.setText(listaVeiculos.get(posicaoSelecionada).getPlaca().toUpperCase());
-                binding.tvItemTipo2.setText(listaVeiculos.get(posicaoSelecionada).getTipoLiteral());
-                binding.tvItemAno2.setText(String.valueOf(listaVeiculos.get(posicaoSelecionada).getAno()));
-                binding.tvItemQuilometragem2.setText(listaVeiculos.get(posicaoSelecionada).getQuilometragem() + " KM");
-                binding.tvItemMediaCombustivel2.setText(mediaCombustivel);
-                binding.tvItemValorTotalEntradas2.setText("R$ " + valorTotalEntradas.replace(".",","));
-                binding.tvItemValorTotalSaidas2.setText("R$ " + valorTotalSaidas.replace(".",","));
+                    String modelo = (listaVeiculos.get(posicaoSelecionada).getModelo().length() > 9 ? listaVeiculos.get(posicaoSelecionada).getModelo().substring(0, 9) + "..." : listaVeiculos.get(posicaoSelecionada).getModelo());
+                    binding.tvLabelVeiculo2.setText(listaVeiculos.get(posicaoSelecionada).getMarca() + "\n" + modelo);
+                    binding.tvItemPlaca2.setText(listaVeiculos.get(posicaoSelecionada).getPlaca().toUpperCase());
+                    binding.tvItemTipo2.setText(listaVeiculos.get(posicaoSelecionada).getTipoLiteral());
+                    binding.tvItemAno2.setText(String.valueOf(listaVeiculos.get(posicaoSelecionada).getAno()));
+                    binding.tvItemQuilometragem2.setText(listaVeiculos.get(posicaoSelecionada).getQuilometragem() + " KM");
+                    binding.tvItemMediaCombustivel2.setText(mediaCombustivel);
+                    binding.tvItemValorTotalEntradas2.setText("R$ " + valorTotalEntradas.replace(".", ","));
+                    binding.tvItemValorTotalSaidas2.setText("R$ " + valorTotalSaidas.replace(".", ","));
+                }
             }
 
             @Override
