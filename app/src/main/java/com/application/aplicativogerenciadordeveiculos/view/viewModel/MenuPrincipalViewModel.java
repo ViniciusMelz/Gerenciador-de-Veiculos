@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,32 @@ public class MenuPrincipalViewModel extends ViewModel {
         }).addOnFailureListener(e -> {
             mResultado.postValue(false);
         });
+        db.collection("Saídas").whereEqualTo("idVeiculo", veiculo.getId()).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            for (DocumentSnapshot document : querySnapshot) {
+                                document.getReference().delete()
+                                        .addOnSuccessListener(aVoid -> {
+                                        });
+                            }
+                        }
+                    }
+                });
+        db.collection("Entradas").whereEqualTo("idVeiculo", veiculo.getId()).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            for (DocumentSnapshot document : querySnapshot) {
+                                document.getReference().delete()
+                                        .addOnSuccessListener(aVoid -> {
+                                        });
+                            }
+                        }
+                    }
+                });
     }
 
     public void setmListaVeiculos(MutableLiveData<ArrayList<Veiculo>> mlistaVeiculos) {
