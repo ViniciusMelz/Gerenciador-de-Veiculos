@@ -53,7 +53,7 @@ public class VisualizaSaidaDetalhadaFragment extends Fragment {
         df.setMaximumFractionDigits(2);
         String valorSaida = df.format(saida.getValor());
         String valorMedia = "";
-        if(saida.getMediaCombustivel() == 0.0){
+        if(saida.getMediaCombustivel() != 0.0){
             valorMedia = df.format(saida.getMediaCombustivel());
         }
 

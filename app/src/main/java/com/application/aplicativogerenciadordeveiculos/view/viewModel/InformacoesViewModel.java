@@ -9,12 +9,15 @@ import com.application.aplicativogerenciadordeveiculos.model.Entrada;
 import com.application.aplicativogerenciadordeveiculos.model.Saida;
 import com.application.aplicativogerenciadordeveiculos.model.Usuario;
 import com.application.aplicativogerenciadordeveiculos.model.Veiculo;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InformacoesViewModel extends ViewModel {
@@ -230,7 +233,7 @@ public class InformacoesViewModel extends ViewModel {
 
     public void buscaEntradasFirebase(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Entradas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId()).orderBy("data", Query.Direction.DESCENDING)
+        db.collection("Entradas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId())
                 .addSnapshotListener((querySnapshot, e) -> {
                     if (e != null) {
                         return;
@@ -243,14 +246,22 @@ public class InformacoesViewModel extends ViewModel {
                             entrada.setIdEntrada(doc.getId());
                             listaEntradas.add(entrada);
                         }
+                        listaEntradas.sort((entrada1, entrada2) -> {
+                            Date t1 = entrada1.getData();
+                            Date t2 = entrada2.getData();
+                            if (t1 != null && t2 != null) {
+                                return t2.compareTo(t1);
+                            }
+                            return 0;
+                        });
                         this.setArrayListEntradas(listaEntradas);
                     }
                 });
     }
 
-    public void buscaSaidasFirebase(){
+    public void buscaSaidasFirebase() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Saídas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId()).orderBy("data", Query.Direction.DESCENDING)
+        db.collection("Saídas").whereEqualTo("idVeiculo", this.mVeiculoSelecionado.getValue().getId())
                 .addSnapshotListener((querySnapshot, e) -> {
                     if (e != null) {
                         return;
@@ -263,6 +274,14 @@ public class InformacoesViewModel extends ViewModel {
                             saida.setIdSaida(doc.getId());
                             listaSaidas.add(saida);
                         }
+                        listaSaidas.sort((saida1, saida2) -> {
+                            Date t1 = saida1.getData();
+                            Date t2 = saida2.getData();
+                            if (t1 != null && t2 != null) {
+                                return t2.compareTo(t1);
+                            }
+                            return 0;
+                        });
                         this.setArrayListSaidas(listaSaidas);
                     }
                 });

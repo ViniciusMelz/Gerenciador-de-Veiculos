@@ -197,7 +197,7 @@ public class visualizaSaidasFragment extends Fragment {
                 " ['Impostos', " + valorTotalImpostos + "]," +
                 " ['Seguro', " + valorTotalSeguro + "]," +
                 " ['Aluguel', " + valorTotalAluguel + "]," +
-                " ['Outras Entradas', " + valorTotalOutros + "]]";
+                " ['Outras Saídas', " + valorTotalOutros + "]]";
         String htmlData = "<html>\n" +
                 "  <head>\n" +
                 "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n" +
@@ -218,7 +218,7 @@ public class visualizaSaidasFragment extends Fragment {
                 "        var options = {'title':'Comparação Tipos de Saídas',\n" +
                 "                       'width':430,\n" +
                 "                       'height':350," +
-                "                       colors:['orange','brown','green','red','blue'],\n" +
+                "                       colors:['orange','brown','red','green','blue','black'],\n" +
                 "                       pieHole: 0.4," +
                 "                       backgroundColor: '#D3D3D3'};\n" +
                 "\n" +
