@@ -54,6 +54,12 @@ public class InformacoesViewModel extends ViewModel {
     public void zerarListaVeiculos(){
         this.mlistaVeiculos = new MutableLiveData<>();
     }
+    public void zerarListaEntradas(){
+        this.mlistaEntradas = new MutableLiveData<>();
+    }
+    public void zerarListaSaidas(){
+        this.mlistaSaidas = new MutableLiveData<>();
+    }
 
     public MutableLiveData<ArrayList<Veiculo>> getListaVeiculos() {
         return mlistaVeiculos;
